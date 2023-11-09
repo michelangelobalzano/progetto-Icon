@@ -2,7 +2,7 @@
 Progetto Ingegneria della Conoscenza
 
 Michelangelo Balzano
-Matricola: 
+Matricola: 736792
 Email: m.balzano14@studenti.uniba.it
 
 Gabriele Grossano

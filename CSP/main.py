@@ -1,26 +1,52 @@
-import pandas as pd
-from pyswip import Prolog
+from hill_climbing import hill_climbing, valutazione
 from preprocessing import preprocessing
+from prettytable import PrettyTable
 
-# backtracking
-def trova_migliore_formazione(modulo):
-    formazione_query = 'formazione({}, Calciatori).'.format(modulo)
-    for result in prolog.query(formazione_query):
-        migliori_calciatori = result['Calciatori']
-        for calciatore in migliori_calciatori:
-            print(calciatore)
-        return  # Termina la funzione dopo aver trovato la prima soluzione
+lista_giocatori = preprocessing()
 
-    print("Nessuna formazione trovata.")
+print("Calcolo migliore formazione\n")
 
+# Scelta del modulo
+print("Moduli disponibili: 433, 442, 4231, 352")
+while True:
+    scelta = int(input("Inserire modulo: "))
 
-nazionalita = input("Inserire nome dello stato in inglese e con iniziale maiuscola oppure 'All': ")
-preprocessing(nazionalita)
+    if(scelta == 433 or scelta == 4231 or scelta == 442 or scelta == 352):
+        break
+    else:
+        print("Modulo non valido!")
+if scelta == 433:
+    modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 'Terzino destro', 'Centrocampista centrale', 'Mediano', 'Centrocampista centrale', 'Ala sinistra', 'Prima punta', 'Ala destra']
+elif scelta == 4231:
+    modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 'Terzino destro', 'Mediano', 'Mediano', 'Ala sinistra', 'Trequartista', 'Ala destra', 'Prima punta']
+elif scelta == 442:
+    modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 'Terzino destro', 'Esterno sinistro', 'Centrocampista centrale', 'Centrocampista centrale', 'Esterno destro', 'Prima punta', 'Prima punta']
+elif scelta == 352:
+    modulo = ['Portiere', 'Difensore centrale', 'Difensore centrale', 'Difensore centrale', 'Esterno sinistro', 'Centrocampista centrale', 'Mediano', 'Centrocampista centrale', 'Esterno destro', 'Prima punta', 'Prima punta']
 
-prolog = Prolog()
-prolog.consult("prolog_files/migliore_formazione.pl")
-prolog.consult("prolog_files/kb_{}.pl".format(nazionalita))
+# Scelta del budget
+print("Budget minimo: 300 (milioni)")
+print("Budget massimo: 500 (milioni)")
+while True:
+    budget = int(input("Inserire budget: "))
 
-# Chiama la funzione per ottenere e stampare la formazione
-modulo = input("Inserire modulo (433, 352, 4231, 442): ")
-trova_migliore_formazione(modulo)
+    if(budget >= 300 and budget <= 500):
+        break
+    else:
+        print("Budget non valido")
+
+# Calcolo della formazione
+formazione = hill_climbing(modulo, lista_giocatori, budget)
+costo, overall = valutazione(formazione)
+
+# Creazione di una tabella per la stampa della formazione
+tabella_formazione = PrettyTable(["Nome", "Overall", "Posizione", "Costo (milioni di euro)"])
+
+for giocatore in formazione:
+    tabella_formazione.add_row(giocatore)
+
+tabella_formazione.add_row(["", "", "", ""])
+tabella_formazione.add_row(["TOTALE", overall, "", costo])
+
+# Stampa della tabella
+print(tabella_formazione)

@@ -1,15 +1,51 @@
 import pandas as pd
 from unidecode import unidecode # per togliere tutti gli accenti dalle lettere
 
-def preprocessing(nazionalita):
+def preprocessing():
+    # Dizionario per sostituzioni delle sigle delle posizioni
+    mappa_posizioni = {'GK': 'Portiere', 'RB': 'Terzino destro', 'CB': 'Difensore centrale',
+                       'LB': 'Terzino sinistro', 'CM': 'Centrocampista centrale', 'CDM': 'Mediano',
+                       'CAM': 'Trequartista', 'RW': 'Ala destra', 'ST': 'Prima punta', 'LW': 'Ala sinistra',
+                       'LM': 'Esterno sinistro', 'RM': 'Esterno destro'}
+
+    # Caricamento dataset
+    dataset = pd.read_csv('dataset/dataset.csv')
+    # Colonne da mantenere
+    colonne = ['Known As', 'Overall', 'Positions Played', 'Value(in Euro)']
+    # Selezione delle colonne
+    ds = dataset[colonne]
+    # Selezione dei primi 500 elementi
+    ds = ds.iloc[:500]
+    # Conversione da euro in milioni di euro del valore
+    ds['Value(in Euro)'] = ds['Value(in Euro)'] / 1000000
+
+
+    lista_giocatori = []
+    for index, row in ds.iterrows():
+        # Creazione di una tupla per ogni posizione di ogni singolo giocatore
+        posizioni = [pos.strip() for pos in row['Positions Played'].split(',')]
+
+        # Creazione di una tupla per ogni posizione del giocatore
+        for posizione in posizioni:
+            # Sostituzione sigla posizione con nome posizione
+            nome_posizione = mappa_posizioni.get(posizione, posizione)
+            giocatore = (row['Known As'], row['Overall'], nome_posizione, row['Value(in Euro)'])
+
+            # Inserimento giocatore nel vettore
+            lista_giocatori.append(giocatore)
+    return lista_giocatori
+
+
+# preprocessing del dataset csv
+def pre(nazionalita):
     # caricamento del dataset dal file csv
     dataset = pd.read_csv('dataset/dataset.csv')
 
-    if (nazionalita != 'All'):
+    if (nazionalita.lower() != 'all'):
         # rimozione di tutti i giocatori tranne quelli della nazionalita in input
-        dataset = dataset[dataset['Nationality'] == nazionalita]
+        dataset = dataset[dataset['Nationality'].str.lower() == nazionalita]
 
-    if (nazionalita == 'All' or len(dataset) > 0):
+    if (nazionalita.lower() == 'all' or len(dataset) > 0):
         # colonne utili da mantenere nel dataset
         colonne = ['Known As', 'Overall', 'Positions Played']
 
@@ -20,48 +56,52 @@ def preprocessing(nazionalita):
         dataset_troncato = dataset_troncato.iloc[:100]
 
         # esportare il dataset su file
-        dataset_troncato.to_csv("dataset\dataset_{}.csv".format(nazionalita), index = False)
+        dataset_troncato.to_csv("dataset\dataset_CSP.csv", index = False)
 
         # creare file prolog con i fatti sui giocatori della nazionale
-        create_prolog_file(nazionalita)
+        creare_clausole_prolog()
+
+        return (1)
     
     else:
-        print ("nazionalita' non valida!")
+        return (0)
 
-def create_prolog_file(nazionalita):
+# creazione del file prolog
+def creare_clausole_prolog():
     # caricamento del dataset
-    dataset = pd.read_csv('dataset/dataset_{}.csv'.format(nazionalita))
+    dataset = pd.read_csv('dataset/dataset_CSP.csv')
 
-    # trasformare i nomi e i ruoli in minuscolo
-    dataset['Known As'] = dataset['Known As'].str.lower()
-    dataset['Positions Played'] = dataset['Positions Played'].str.lower()
+    # creazione delle clausole
+    with open('prolog_files/kb_calciatori_CSP.pl', 'w') as prolog_file:
+        # ciclo per recuperare le tuple dal dataset
+        for index, row in dataset.iterrows():
+            # recupero dati singola tupla
+            nome = row['Known As']
+            ruoli = row["Positions Played"].split(",")
+            overall = row['Overall']
 
-    # creare vettore per memorizzare le tuple
-    prolog_data = []
+            # normalizzazione delle stringhe
+            nome = normalizzazione(nome)
 
-    # ciclo per recuperare le tuple dal dataset
-    for index, row in dataset.iterrows():
-        # recupero dati singola tupla
-        nome = row['Known As']
-        ruoli = row["Positions Played"].split(",")
-        overall = row['Overall']
+            # inserimento di una tupla per ogni ruolo del singolo giocatore nel vettore
+            for ruolo in ruoli:
+                ruolo = normalizzazione(ruolo)
+                clausola = f"calciatore('{nome}', '{ruolo}', {overall})."
+                prolog_file.write(clausola + "\n")
 
-        # togliere i puntini che abbreviano i nomi
-        nome = nome.replace(".", "")
-        # togliere gli apostrofi dai cognomi
-        nome = nome.replace("'", "")
-        # togliere gli spazi
-        nome = nome.replace(" ", "_")
-        # togliere i trattini dai cognomi
-        nome = nome.replace("-", "_")
-        # togliere tutti gli accenti dalle lettere
-        nome = unidecode(nome)
+# normalizzazione delle parole
+def normalizzazione(parola):
+    # trasformare tutte le lettere in minuscolo
+    parola = parola.lower()
+    # togliere i puntini che abbreviano i nomi
+    parola = parola.replace(".", "")
+    # togliere gli apostrofi dai cognomi
+    parola = parola.replace("'", "")
+    # togliere gli spazi
+    parola = parola.replace(" ", "_")
+    # togliere i trattini dai cognomi
+    parola = parola.replace("-", "_")
+    # togliere tutti gli accenti dalle lettere
+    parola = unidecode(parola)
 
-        # inserimento di una tupla per ogni ruolo del singolo giocatore nel vettore
-        for ruolo in ruoli:
-            prolog_data.append((nome, ruolo, overall))
-
-    # stampare il vettore delle tuple sul file prolog
-    with open('prolog_files/kb_{}.pl'.format(nazionalita), 'w') as prolog_file:
-        for data in prolog_data:
-            prolog_file.write(f'calciatore({data[0]}, {data[1]}, {data[2]}).\n')
+    return parola

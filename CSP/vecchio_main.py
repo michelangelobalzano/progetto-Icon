@@ -1,4 +1,4 @@
-import pandas as pd
+"""import pandas as pd
 from pyswip import Prolog
 from preprocessing import preprocessing
 
@@ -61,4 +61,4 @@ while True:
     uscita = int(input("Digitare 0 per ripetere con un altra nazionale: "))
 
     if (uscita != 0):
-        break
+        break"""

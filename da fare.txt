@@ -1,0 +1,31 @@
+CSP:
+
+- adesso la migliore formazione viene calcolata attraverso un sistema di clausole definite: non è sufficiente in quanto non viene implementato alcun metodo di ricerca di soluzione al CSP
+
+- calcolare la migliore formazione utilizzando metodi di ricerca locale (es. Iterative Best Improvement, Tabu search, Beam Search)
+
+- valutare i metodi di ricerca in base al totale degli overall della formazione risultato e in base al numero di iterazioni effettuate dai cicli
+
+- potrebbe essere lasciato il metodo attuale di calcolo (tramite clausole) in modo tale da poter confrontare le formazioni ottenute tramite i metodi di ricerca con quella ottenuta dalle clausole, visto che attraverso le clausole si ottiene la migliore formazione in assoluto.
+
+KB:
+
+- aggiungere tante query come ad esempio: contratto_in_scadenza(Calciatore) se Contract Until = 2023, bandiera(Calciatore) se sta nella squadra attuale da 10 o più anni, stesso_piede(CalciatoreA, CalciatoreB) se sono entrambi mancini o destrorsi, ecc...
+
+Apprendimento supervisionato:
+
+- l'apprendimento potrebbe essere completo così com'è
+
+- Dalla teoria devo ancora studiare l'incertezza e l'apprendimento con incertezza. Questi argomenti potrebbero descrivere altri metodi per la previsione dell'overall.
+
+Clustering:
+
+- si potrebbero analizzare le nazionalità con più giocatori, le nazionalità che hanno i giocatori più forti, le nazionalità con i giocatori più pagati, e così via...
+
+- si potrebbero studiare i club in ordine di stipendi dei calciatori
+
+- si potrebbero studiare i ruoli più pagati
+
+- si potrebbe studiare in quale maniera incidono l'altezza e il peso sulla velocità dei calciatori
+
+- si potrebbe studiare chi tra i destrorsi e i mancini hanno più potenza di tiro e precisione di tiro 

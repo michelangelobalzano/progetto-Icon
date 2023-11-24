@@ -1,15 +1,12 @@
 from ricerca_locale import *
 import matplotlib.pyplot as plt
-from preprocessing import preprocessing
 
+######################################################################################################################
+# Percentuale di peggioramento consentito
 TASSO_PEGGIORAMENTO = 0.03
 
-def stampa(formazione):
-    for c in formazione:
-        print(c[0], ": ", c[1])
-    q,w = punteggi(formazione)
-    print("Costo: ", q, " - overall: ", w)
-
+######################################################################################################################
+# Metodo per il test dell'algoritmo
 def test_mis(modulo, lista_calciatori, budget, numero_test):
     lista_max_iterazioni = [20, 50, 100, 200, 500] # Lista max iterazioni da testare
     risultati = [] # Risultati ottenuti per ogni valore di max iterazioni
@@ -33,6 +30,8 @@ def test_mis(modulo, lista_calciatori, budget, numero_test):
     grafico(risultati, lista_max_iterazioni)
 
 
+######################################################################################################################
+# Metodo per ottenere i risultati per il confronto degli algoritmi
 def risultati_mis(modulo, lista_calciatori, budget, numero_test):
     max_iterazioni = 500
     risultati = []
@@ -44,10 +43,13 @@ def risultati_mis(modulo, lista_calciatori, budget, numero_test):
     return risultati
 
 
+######################################################################################################################
 # Funzione di valutazione
 def valutazione(c1, c2, o1, o2, oc1, oc2, budget):
     return ((c2 < budget) and (o1 < o2) or ((c2 < c1) and (oc1 <= oc2 * TASSO_PEGGIORAMENTO)))
 
+######################################################################################################################
+# Most Improving Step
 def most_improving_step(modulo, lista_calciatori, budget, max_iterazioni):
     
     # Random restart
@@ -94,11 +96,13 @@ def most_improving_step(modulo, lista_calciatori, budget, max_iterazioni):
 
     return formazione
 
+######################################################################################################################
+# Metodo per la creazione del grafico del test dell'algoritmo
 def grafico(risultati, lista):
     plt.plot(lista, risultati, marker='o')
     plt.xlabel('Numero massimo di iterazioni')
     plt.ylabel('Overall medio ottenuto')
-    plt.title('Confronto dei risultati con l algoritmo Most Improving Step')
+    plt.title('Algoritmo Most Improving Step')
     plt.grid(True)
     plt.savefig("CSP/grafici/mis.png")
     plt.show()

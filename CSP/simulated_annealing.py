@@ -3,8 +3,12 @@ import random
 from ricerca_locale import *
 import matplotlib.pyplot as plt
 
+######################################################################################################################
+# Temperatura iniziale da raffreddare
 TEMPERATURA_INIZIALE = 2000
 
+######################################################################################################################
+# Metodo per il test dell'algoritmo
 def test_sa(modulo, lista_calciatori, budget, numero_test):
     lista_tassi_raffreddamento = [0.02, 0.015, 0.01, 0.005, 0.002] # Lista tassi di raffreddamento da testare
     risultati = [] # Risultati ottenuti per ogni valore di tassi di raffreddamento
@@ -27,6 +31,8 @@ def test_sa(modulo, lista_calciatori, budget, numero_test):
 
     grafico(risultati, lista_tassi_raffreddamento)
 
+######################################################################################################################
+# Metodo per ottenere i risultati per il confronto degli algoritmi
 def risultati_sa(modulo, lista_calciatori, budget, numero_test):
     tasso_raffreddamento = 0.002
     risultati = []
@@ -37,6 +43,7 @@ def risultati_sa(modulo, lista_calciatori, budget, numero_test):
         risultati.append(overall)
     return risultati
 
+######################################################################################################################
 # Funzione di valutazione
 def valutazione(c1, c2, o1, o2, budget, temperatura):
 
@@ -49,6 +56,8 @@ def valutazione(c1, c2, o1, o2, budget, temperatura):
     
     return (c2 < budget and (o2 >= o1 or random.random() < probabilita))
 
+######################################################################################################################
+# Simulated Annealing
 def simulated_annealing(modulo, lista_calciatori, budget, tasso_raffreddamento):
 
     # Random restart
@@ -85,11 +94,13 @@ def simulated_annealing(modulo, lista_calciatori, budget, tasso_raffreddamento):
             temperatura *= 1 - tasso_raffreddamento
     return formazione
 
+######################################################################################################################
+# Metodo per la creazione del grafico del test dell'algoritmo
 def grafico(risultati, lista):
     plt.plot(lista, risultati, marker='o')
     plt.xlabel('Tasso di raffreddamento')
     plt.ylabel('Overall medio ottenuto')
-    plt.title('Confronto dei risultati con l algoritmo Simulated Annealing')
+    plt.title('Algoritmo Simulated Annealing')
     plt.grid(True)
     plt.savefig("CSP/grafici/sa.png")
     plt.show()

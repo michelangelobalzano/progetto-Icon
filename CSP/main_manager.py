@@ -1,3 +1,4 @@
+#from prettytable import PrettyTable
 from hill_climbing import *
 from simulated_annealing import *
 from tabu_search import *
@@ -5,39 +6,50 @@ from most_improving_step import *
 from preprocessing import preprocessing
 from input_manager import *
 import os
-from prettytable import PrettyTable
 from ricerca_locale import punteggi
 
-MAX_ITERAZIONI = 500
-TASSO_RAFFREDDAMENTO = 0.002
+######################################################################################################################
+# Valori utilizzati per il test e per il confronto di algoritmi
+MODULO = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 
+            'Terzino destro', 'Centrocampista centrale', 'Mediano', 'Centrocampista centrale', 
+            'Ala sinistra', 'Prima punta', 'Ala destra']
+BUDGET = 350
+NUMERO_TEST = 500
 
+######################################################################################################################
+# Valori utilizzati per il calcolo di una singola formazione
+MAX_ITERAZIONI = 500
+TASSO_RAFFREDDAMENTO = 0.005
+
+######################################################################################################################
+# Metodo per la pulizia dello schermo
 def clearConsole():
     command = "clear"
-    if os.name in ("nt", "dos"):  # If Machine is running on Windows, use cls
+    if os.name in ("nt", "dos"):
         command = "cls"
     os.system(command)
 
+######################################################################################################################
+# Metodo per la stampa di una singola formazione sottoforma di tabella
 def stampa(formazione):
-    tabella = PrettyTable(["Nome", "Overall", "Posizione", "Costo"])
+    '''tabella = PrettyTable(["Nome", "Overall", "Posizione", "Costo"])
     for calciatore in formazione:
         tabella.add_row(calciatore)
     tabella.add_row(["", "", "", ""])
     costo, overall = punteggi(formazione)
     tabella.add_row(["TOTALE", overall, "", costo])
-    print(tabella)
+    print(tabella)'''
+    print(formazione)
 
+######################################################################################################################
 # Test degli algoritmi singolarmente
 def test_algoritmi():
-    modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 
-              'Terzino destro', 'Centrocampista centrale', 'Mediano', 'Centrocampista centrale', 
-              'Ala sinistra', 'Prima punta', 'Ala destra']
-    budget = 400
-    numero_test = 50
-
     # Recupero lista dei calciatori
     lista_calciatori = preprocessing()
 
     clearConsole()
+
+    # Scelta dell'algoritmo
     print("SCEGLIERE ALGORITMO\n")
     print("1 = Hill Climbing")
     print("2 = Tabu Search")
@@ -50,45 +62,39 @@ def test_algoritmi():
         else:
             print("Scelta non valida!")
 
+    # Test dell'algoritmo scelto
     if (scelta == 1):
-        test_hc(modulo, lista_calciatori, budget, numero_test)
+        test_hc(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
     elif (scelta == 2):
-        test_ts(modulo, lista_calciatori, budget, numero_test)
+        test_ts(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
     elif (scelta == 3):
-        test_sa(modulo, lista_calciatori, budget, numero_test)
+        test_sa(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
     elif (scelta == 4):
-        test_mis(modulo, lista_calciatori, budget, numero_test)
+        test_mis(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
 
-
-
-
+######################################################################################################################
 # Confronto tra tutti gli algoritmi
 def confronto_algoritmi():
-    modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 
-              'Terzino destro', 'Centrocampista centrale', 'Mediano', 'Centrocampista centrale', 
-              'Ala sinistra', 'Prima punta', 'Ala destra']
-    budget = 400
-    numero_test = 50
 
     # Recupero lista dei calciatori
     lista_calciatori = preprocessing()
 
     # Recupero vettore dei risultati da ogni algoritmo
-    ris_hc = risultati_hc(modulo, lista_calciatori, budget, numero_test)
-    ris_ts = risultati_ts(modulo, lista_calciatori, budget, numero_test)
-    ris_sa = risultati_sa(modulo, lista_calciatori, budget, numero_test)
-    ris_mis = risultati_mis(modulo, lista_calciatori, budget, numero_test)
+    ris_hc = risultati_hc(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
+    ris_ts = risultati_ts(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
+    ris_sa = risultati_sa(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
+    ris_mis = risultati_mis(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
 
     # Creazione grafico confronto
     plt.boxplot([ris_hc, ris_ts, ris_sa, ris_mis], 
                 labels=['HC', 'TS', 'SA', 'MIS'])
     plt.ylabel('Valutazione')
-    plt.title('Confronto risultati degli algoritmo')
+    plt.title('Confronto risultati degli algoritmi')
     plt.savefig("CSP/grafici/confronto.png")
     plt.show()
 
-
-
+######################################################################################################################
+# Calcolo di una singola formazione
 def calcolo_singolo():
     clearConsole()
     print("SCEGLIERE ALGORITMO\n")
@@ -104,12 +110,15 @@ def calcolo_singolo():
             print("Scelta non valida!")
     
     clearConsole()
+
     # Recupero lista dei calciatori
     lista_calciatori = preprocessing()
+
     # Input modulo e budget
     modulo = input_modulo()
     budget = input_budget()
 
+    # Ricerca squadra
     if (scelta == 1):
         formazione = hill_climbing(modulo, lista_calciatori, budget, MAX_ITERAZIONI)
     elif (scelta == 2):

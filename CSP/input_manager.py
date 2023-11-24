@@ -1,3 +1,5 @@
+######################################################################################################################
+# Metodo per prendere in input un modulo valido
 def input_modulo():
     print("Moduli disponibili: 433, 442, 4231, 352")
     while True:
@@ -26,6 +28,8 @@ def input_modulo():
 
     return modulo
 
+######################################################################################################################
+# Metodo per prendere in input un budget valido
 def input_budget():
     print("Budget minimo: 300 (milioni)")
     print("Budget massimo: 500 (milioni)")

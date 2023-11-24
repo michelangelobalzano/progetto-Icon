@@ -1,7 +1,11 @@
 from main_manager import *
 
+######################################################################################################################
+# Main
 while True:
     clearConsole()
+
+    # Scelta task
     print("CALCOLO MIGLIORE FORMAZIONE CON BUDGET\n")
     print("1 = Effettuare un singolo calcolo")
     print("2 = Testare un algoritmo")
@@ -14,6 +18,7 @@ while True:
         else:
             print("Scelta non valida!")
 
+    # Effettuazione task
     if (scelta == 1):
         calcolo_singolo()
     elif (scelta == 2):

@@ -1,12 +1,13 @@
 import pandas as pd
-#from unidecode import unidecode # per togliere tutti gli accenti dalle lettere
 
+######################################################################################################################
 # Dizionario per sostituzioni delle sigle delle posizioni
 mappa_posizioni = {'GK': 'Portiere', 'RB': 'Terzino destro', 'CB': 'Difensore centrale',
                     'LB': 'Terzino sinistro', 'CM': 'Centrocampista centrale', 'CDM': 'Mediano',
                     'CAM': 'Trequartista', 'RW': 'Ala destra', 'ST': 'Prima punta', 'LW': 'Ala sinistra',
                     'LM': 'Esterno sinistro', 'RM': 'Esterno destro'}
 
+######################################################################################################################
 # Metodo che crea il dataset adatto per il CSP
 def creazione_dataset():
 
@@ -21,6 +22,7 @@ def creazione_dataset():
     # Salvataggio dataset
     ds.to_csv("dataset\dataset_CSP.csv", index = False)
 
+######################################################################################################################
 # Preprocessing del dataset per la creazione del vettore dei calciatori
 def preprocessing():
 

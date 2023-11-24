@@ -1,9 +1,12 @@
 from ricerca_locale import *
 import matplotlib.pyplot as plt
 
+######################################################################################################################
 DIMENSIONE_LISTA_TABU = 50
 TASSO_PEGGIORAMENTO = 0.03
 
+######################################################################################################################
+# Metodo per il test dell'algoritmo
 def test_ts(modulo, lista_calciatori, budget, numero_test):
     lista_max_iterazioni = [20, 50, 100, 200, 500] # Lista max iterazioni da testare
     risultati = [] # Risultati ottenuti per ogni valore di max iterazioni
@@ -26,6 +29,8 @@ def test_ts(modulo, lista_calciatori, budget, numero_test):
 
     grafico(risultati, lista_max_iterazioni)
 
+######################################################################################################################
+# Metodo per ottenere i risultati per il confronto degli algoritmi
 def risultati_ts(modulo, lista_calciatori, budget, numero_test):
     max_iterazioni = 500
     risultati = []
@@ -36,11 +41,13 @@ def risultati_ts(modulo, lista_calciatori, budget, numero_test):
         risultati.append(overall)
     return risultati
 
+######################################################################################################################
 # Funzione di valutazione
 def valutazione(c1, c2, o1, o2, oc1, oc2, budget):
     return ((c2 < budget) and (o1 < o2) or ((c2 < c1) and (oc1 <= oc2 * TASSO_PEGGIORAMENTO)))
 
-# Hill Climbing
+######################################################################################################################
+# Tabu Search
 def tabu_search(modulo, lista_calciatori, budget, max_iterazioni):
 
     # Random restart
@@ -84,11 +91,13 @@ def tabu_search(modulo, lista_calciatori, budget, max_iterazioni):
             break
     return formazione
 
+######################################################################################################################
+# Metodo per la creazione del grafico del test dell'algoritmo
 def grafico(risultati, lista):
     plt.plot(lista, risultati, marker='o')
     plt.xlabel('Numero massimo di iterazioni')
     plt.ylabel('Overall medio ottenuto')
-    plt.title('Confronto dei risultati con l algoritmo Tabu Search')
+    plt.title('Algoritmo Tabu Search')
     plt.grid(True)
     plt.savefig("CSP/grafici/ts.png")
     plt.show()

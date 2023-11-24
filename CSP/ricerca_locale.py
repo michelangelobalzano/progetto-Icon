@@ -1,5 +1,6 @@
 import random
 
+######################################################################################################################
 # Scelta di un calciatore casuale per posizione
 def calciatore_casuale(posizione, lista_calciatori):
     while True:
@@ -8,6 +9,7 @@ def calciatore_casuale(posizione, lista_calciatori):
             break
     return calciatore
 
+######################################################################################################################
 # Funzione che restituisce il costo totale e l'overall medio di una formazione
 def punteggi(formazione):
     costo = 0
@@ -18,6 +20,7 @@ def punteggi(formazione):
     overall = overall / 11
     return costo, round(overall, 2)
 
+######################################################################################################################
 # Metodo di inizializzazione
 def random_restart(modulo, lista_calciatori, budget):
     while True:

@@ -1,5 +1,4 @@
 from ricerca_locale import *
-import numpy as np
 import matplotlib.pyplot as plt
 
 TASSO_PEGGIORAMENTO = 0.03
@@ -17,7 +16,7 @@ def test_hc(modulo, lista_calciatori, budget, numero_test):
         # Effettuazione del singolo test
         for _ in range(numero_test):
             formazione = hill_climbing(modulo, lista_calciatori, budget, m)
-            _, overall = valutazione(formazione)
+            _, overall = punteggi(formazione)
             somma = somma + overall
 
         # Inserimento del risultato ottenuto con il valore di max iterazioni
@@ -25,6 +24,10 @@ def test_hc(modulo, lista_calciatori, budget, numero_test):
         risultati.append(media)
 
     grafico(risultati, lista_max_iterazioni)
+
+# Funzione di valutazione
+def valutazione(c1, c2, o1, o2, oc1, oc2, budget):
+    return ((c2 < budget) and (o1 < o2) or ((c2 < c1) and (oc1 <= oc2 * TASSO_PEGGIORAMENTO)))
 
 # Hill Climbing
 def hill_climbing(modulo, lista_calciatori, budget, max_iterazioni):
@@ -35,7 +38,7 @@ def hill_climbing(modulo, lista_calciatori, budget, max_iterazioni):
 
     # Walk
     while True:
-        costo, overall = valutazione(formazione)
+        costo, overall = punteggi(formazione)
 
         # Per ogni posizione si prova ad effettuare una sostituzione
         for i, posizione in enumerate(modulo):
@@ -51,8 +54,8 @@ def hill_climbing(modulo, lista_calciatori, budget, max_iterazioni):
             formazione_temp[i] = nuovo_calciatore
 
             # Valutazione nuova formazione
-            costo_nuovo, overall_nuovo = valutazione(formazione_temp)
-            if ((costo_nuovo < budget) and (overall < overall_nuovo) or ((costo_nuovo < costo) and (formazione[i][1] <= formazione_temp[i][1] * TASSO_PEGGIORAMENTO))):
+            costo_nuovo, overall_nuovo = punteggi(formazione_temp)
+            if (valutazione(costo, costo_nuovo, overall, overall_nuovo, formazione[i][1], formazione_temp[i][1], budget)):
                 formazione = formazione_temp
                 costo = costo_nuovo
                 overall = overall_nuovo
@@ -69,5 +72,5 @@ def grafico(risultati, lista):
     plt.ylabel('Overall medio ottenuto')
     plt.title('Confronto dei risultati con l algoritmo Hill Climbing')
     plt.grid(True)
-    plt.savefig("CSP/grafici/hc.png")
+    #plt.savefig("CSP/grafici/hc.png")
     plt.show()

@@ -25,7 +25,7 @@ def creazione_dataset():
 def preprocessing():
 
     # Creazione del dataset
-    # creazione_dataset()
+    #creazione_dataset()
 
     # Caricamento del dataset
     dataset = pd.read_csv('dataset/dataset_CSP.csv')

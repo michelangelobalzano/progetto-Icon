@@ -18,7 +18,7 @@ def test_sa(modulo, lista_calciatori, budget, numero_test):
         # Effettuazione del singolo test
         for _ in range(numero_test):
             formazione = simulated_annealing(modulo, lista_calciatori, budget, tr)
-            _, overall = valutazione(formazione)
+            _, overall = punteggi(formazione)
             somma = somma + overall
 
         # Inserimento del risultato ottenuto con il valore di tassi di raffreddamento
@@ -27,11 +27,23 @@ def test_sa(modulo, lista_calciatori, budget, numero_test):
 
     grafico(risultati, lista_tassi_raffreddamento)
 
+# Funzione di valutazione
+def valutazione(c1, c2, o1, o2, budget, temperatura):
+
+    # Calcolo probabilità di accettazione di una sostituzione peggiorativa
+    # Normalizzazione dei valori usando la funzione tanh
+    normalized_cost_difference = math.tanh((c2 - c1) / temperatura)
+
+    # Calcolo della probabilità di accettare la soluzione peggiorativa usando la funzione tanh
+    probabilita = (1 + normalized_cost_difference) / 2
+    
+    return (c2 < budget and (o2 >= o1 or random.random() < probabilita))
+
 def simulated_annealing(modulo, lista_calciatori, budget, tasso_raffreddamento):
 
     # Random restart
     formazione = random_restart(modulo, lista_calciatori, budget)
-    costo, overall = valutazione(formazione)
+    costo, overall = punteggi(formazione)
 
     # Inizializzazione temperatura
     temperatura = TEMPERATURA_INIZIALE
@@ -52,16 +64,9 @@ def simulated_annealing(modulo, lista_calciatori, budget, tasso_raffreddamento):
             formazione_temp[i] = nuovo_calciatore
 
             # Valutazione nuova formazione
-            costo_nuovo, overall_nuovo = valutazione(formazione_temp)
+            costo_nuovo, overall_nuovo = punteggi(formazione_temp)
 
-            # Calcolo probabilità di accettazione di una sostituzione peggiorativa
-            # Normalizzazione dei valori usando la funzione tanh
-            normalized_cost_difference = math.tanh((costo_nuovo - costo) / temperatura)
-
-            # Calcolo della probabilità di accettare la soluzione peggiorativa usando la funzione tanh
-            probabilita = (1 + normalized_cost_difference) / 2
-
-            if (costo_nuovo < budget and (overall_nuovo >= overall or random.random() < probabilita)):
+            if (valutazione(costo, costo_nuovo, overall, overall_nuovo, budget, temperatura)):
                 formazione = formazione_temp
                 costo = costo_nuovo
                 overall = overall_nuovo
@@ -76,5 +81,5 @@ def grafico(risultati, lista):
     plt.ylabel('Overall medio ottenuto')
     plt.title('Confronto dei risultati con l algoritmo Simulated Annealing')
     plt.grid(True)
-    plt.savefig("CSP/grafici/sa.png")
+    #plt.savefig("CSP/grafici/sa.png")
     plt.show()

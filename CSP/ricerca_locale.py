@@ -8,8 +8,8 @@ def calciatore_casuale(posizione, lista_calciatori):
             break
     return calciatore
 
-# Funzione di valutazione
-def valutazione(formazione):
+# Funzione che restituisce il costo totale e l'overall medio di una formazione
+def punteggi(formazione):
     costo = 0
     overall = 0
     for c in formazione:
@@ -28,7 +28,7 @@ def random_restart(modulo, lista_calciatori, budget):
                 if (calciatore not in formazione):
                     break
             formazione.append(calciatore)
-        costo, _ = valutazione(formazione)
+        costo, _ = punteggi(formazione)
         if (costo < budget):
             break
     return formazione

@@ -15,7 +15,7 @@ def creazione_dataset():
     # Colonne da mantenere
     colonne = ['Known As', 'Overall', 'Positions Played', 'Value(in Euro)']
     # Selezione delle colonne
-    ds = dataset[colonne]
+    ds = dataset[colonne].iloc[:500]
     # Conversione da euro in milioni di euro del valore
     ds.loc[:, 'Value(in Euro)'] = ds['Value(in Euro)'] / 1000000
     # Salvataggio dataset
@@ -25,7 +25,7 @@ def creazione_dataset():
 def preprocessing():
 
     # Creazione del dataset
-    #creazione_dataset()
+    creazione_dataset()
 
     # Caricamento del dataset
     dataset = pd.read_csv('dataset/dataset_CSP.csv')

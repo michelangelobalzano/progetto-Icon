@@ -25,6 +25,16 @@ def test_hc(modulo, lista_calciatori, budget, numero_test):
 
     grafico(risultati, lista_max_iterazioni)
 
+def risultati_hc(modulo, lista_calciatori, budget, numero_test):
+    max_iterazioni = 500
+    risultati = []
+    # Effettuazione del singolo test
+    for _ in range(numero_test):
+        formazione = hill_climbing(modulo, lista_calciatori, budget, max_iterazioni)
+        _, overall = punteggi(formazione)
+        risultati.append(overall)
+    return risultati
+
 # Funzione di valutazione
 def valutazione(c1, c2, o1, o2, oc1, oc2, budget):
     return ((c2 < budget) and (o1 < o2) or ((c2 < c1) and (oc1 <= oc2 * TASSO_PEGGIORAMENTO)))
@@ -72,5 +82,5 @@ def grafico(risultati, lista):
     plt.ylabel('Overall medio ottenuto')
     plt.title('Confronto dei risultati con l algoritmo Hill Climbing')
     plt.grid(True)
-    #plt.savefig("CSP/grafici/hc.png")
+    plt.savefig("CSP/grafici/hc.png")
     plt.show()

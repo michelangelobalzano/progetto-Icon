@@ -8,13 +8,21 @@ def input_modulo():
         else:
             print("Modulo non valido!")
     if scelta == 433:
-        modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 'Terzino destro', 'Centrocampista centrale', 'Mediano', 'Centrocampista centrale', 'Ala sinistra', 'Prima punta', 'Ala destra']
+        modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 
+                  'Terzino destro', 'Centrocampista centrale', 'Mediano', 'Centrocampista centrale', 
+                  'Ala sinistra', 'Prima punta', 'Ala destra']
     elif scelta == 4231:
-        modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 'Terzino destro', 'Mediano', 'Mediano', 'Ala sinistra', 'Trequartista', 'Ala destra', 'Prima punta']
+        modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 
+                  'Terzino destro', 'Mediano', 'Mediano', 'Ala sinistra', 'Trequartista', 
+                  'Ala destra', 'Prima punta']
     elif scelta == 442:
-        modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 'Terzino destro', 'Esterno sinistro', 'Centrocampista centrale', 'Centrocampista centrale', 'Esterno destro', 'Prima punta', 'Prima punta']
+        modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 
+                  'Terzino destro', 'Esterno sinistro', 'Centrocampista centrale', 'Centrocampista centrale', 
+                  'Esterno destro', 'Prima punta', 'Prima punta']
     elif scelta == 352:
-        modulo = ['Portiere', 'Difensore centrale', 'Difensore centrale', 'Difensore centrale', 'Esterno sinistro', 'Centrocampista centrale', 'Mediano', 'Centrocampista centrale', 'Esterno destro', 'Prima punta', 'Prima punta']
+        modulo = ['Portiere', 'Difensore centrale', 'Difensore centrale', 'Difensore centrale', 
+                  'Esterno sinistro', 'Centrocampista centrale', 'Mediano', 'Centrocampista centrale', 
+                  'Esterno destro', 'Prima punta', 'Prima punta']
 
     return modulo
 

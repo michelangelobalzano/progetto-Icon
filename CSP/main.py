@@ -1,22 +1,27 @@
-from hill_climbing import *
-from simulated_annealing import *
-from tabu_search import *
-from preprocessing import preprocessing
-from input_manager import *
+from main_manager import *
 
-NUMERO_TEST = 50
+while True:
+    clearConsole()
+    print("CALCOLO MIGLIORE FORMAZIONE CON BUDGET\n")
+    print("1 = Effettuare un singolo calcolo")
+    print("2 = Testare un algoritmo")
+    print("3 = Confrontare gli algoritmi")
 
-lista_calciatori = preprocessing()
+    while True:
+        scelta = int(input("Inserire scelta: "))
+        if(scelta >= 1 and scelta <= 3):
+            break
+        else:
+            print("Scelta non valida!")
 
-print("CALCOLO MIGLIORE FORMAZIONE\n")
+    if (scelta == 1):
+        calcolo_singolo()
+    elif (scelta == 2):
+        test_algoritmi()
+    elif (scelta == 3):
+        confronto_algoritmi()
 
-# Scelta del modulo e budget
-modulo = input_modulo()
-budget = input_budget()
+    uscita = int(input("Digitare 0 per ripetere: "))
 
-# Hill Climbing
-test_hc(modulo, lista_calciatori, budget, NUMERO_TEST)
-# Tabu Search
-test_ts(modulo, lista_calciatori, budget, NUMERO_TEST)
-# Simulated Annealing
-test_sa(modulo, lista_calciatori, budget, NUMERO_TEST)
+    if (uscita != 0):
+        break

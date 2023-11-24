@@ -26,6 +26,16 @@ def test_ts(modulo, lista_calciatori, budget, numero_test):
 
     grafico(risultati, lista_max_iterazioni)
 
+def risultati_ts(modulo, lista_calciatori, budget, numero_test):
+    max_iterazioni = 500
+    risultati = []
+    # Effettuazione del singolo test
+    for _ in range(numero_test):
+        formazione = tabu_search(modulo, lista_calciatori, budget, max_iterazioni)
+        _, overall = punteggi(formazione)
+        risultati.append(overall)
+    return risultati
+
 # Funzione di valutazione
 def valutazione(c1, c2, o1, o2, oc1, oc2, budget):
     return ((c2 < budget) and (o1 < o2) or ((c2 < c1) and (oc1 <= oc2 * TASSO_PEGGIORAMENTO)))
@@ -80,5 +90,5 @@ def grafico(risultati, lista):
     plt.ylabel('Overall medio ottenuto')
     plt.title('Confronto dei risultati con l algoritmo Tabu Search')
     plt.grid(True)
-    #plt.savefig("CSP/grafici/ts.png")
+    plt.savefig("CSP/grafici/ts.png")
     plt.show()

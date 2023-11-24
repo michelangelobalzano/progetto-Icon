@@ -27,6 +27,16 @@ def test_sa(modulo, lista_calciatori, budget, numero_test):
 
     grafico(risultati, lista_tassi_raffreddamento)
 
+def risultati_sa(modulo, lista_calciatori, budget, numero_test):
+    tasso_raffreddamento = 0.002
+    risultati = []
+    # Effettuazione del singolo test
+    for _ in range(numero_test):
+        formazione = simulated_annealing(modulo, lista_calciatori, budget, tasso_raffreddamento)
+        _, overall = punteggi(formazione)
+        risultati.append(overall)
+    return risultati
+
 # Funzione di valutazione
 def valutazione(c1, c2, o1, o2, budget, temperatura):
 
@@ -81,5 +91,5 @@ def grafico(risultati, lista):
     plt.ylabel('Overall medio ottenuto')
     plt.title('Confronto dei risultati con l algoritmo Simulated Annealing')
     plt.grid(True)
-    #plt.savefig("CSP/grafici/sa.png")
+    plt.savefig("CSP/grafici/sa.png")
     plt.show()

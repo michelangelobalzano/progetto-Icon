@@ -1,4 +1,3 @@
-#from prettytable import PrettyTable
 from hill_climbing import *
 from simulated_annealing import *
 from tabu_search import *
@@ -32,14 +31,11 @@ def clearConsole():
 ######################################################################################################################
 # Metodo per la stampa di una singola formazione sottoforma di tabella
 def stampa(formazione):
-    '''tabella = PrettyTable(["Nome", "Overall", "Posizione", "Costo"])
     for calciatore in formazione:
-        tabella.add_row(calciatore)
-    tabella.add_row(["", "", "", ""])
+        print(calciatore[0], "\t", calciatore[2], "\t", calciatore[1])
     costo, overall = punteggi(formazione)
-    tabella.add_row(["TOTALE", overall, "", costo])
-    print(tabella)'''
-    print(formazione)
+    print("Costo totale: ", costo)
+    print("Overall medio: ", overall)
 
 ######################################################################################################################
 # Test degli algoritmi singolarmente

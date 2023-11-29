@@ -3,6 +3,7 @@ from input_manager import *
 import os # Per metodo ClearConsole()
 from ricerca_locale import punteggi
 import matplotlib.pyplot as plt
+from prettytable import PrettyTable
 
 # Algoritmi
 from hill_climbing import hill_climbing, test_hc, risultati_hc
@@ -28,6 +29,7 @@ NUM_GENERAZIONI = 500
 ######################################################################################################################
 # Metodo per la pulizia dello schermo
 def clearConsole():
+
     command = "clear"
     if os.name in ("nt", "dos"):
         command = "cls"
@@ -36,15 +38,26 @@ def clearConsole():
 ######################################################################################################################
 # Metodo per la stampa di una singola formazione sottoforma di tabella
 def stampa(formazione):
-    for calciatore in formazione:
-        print(calciatore[0], " ", calciatore[2], " ", calciatore[1])
+
+    # Creazione intestazione tabella
+    tabella = PrettyTable(["Nome", "Overall", "Posizione", "Costo (milioni)"])
+    
+    # Inserimento dei calciatori
+    for giocatore in formazione:
+        tabella.add_row(giocatore)
+    
+    # Inserimento riga dei punteggi
+    tabella.add_row(["", "", "", ""])
     costo, overall = punteggi(formazione)
-    print("Costo totale: ", costo)
-    print("Overall medio: ", overall)
+    tabella.add_row(["TOTALE:", overall, "", costo])
+    
+    # Stampa
+    print(tabella)
 
 ######################################################################################################################
 # Test degli algoritmi singolarmente
 def test_algoritmi():
+
     # Recupero lista dei calciatori
     lista_calciatori = preprocessing()
 
@@ -101,6 +114,7 @@ def confronto_algoritmi():
 ######################################################################################################################
 # Calcolo di una singola formazione
 def calcolo_singolo():
+
     clearConsole()
     print("SCEGLIERE ALGORITMO\n")
     print("1 = Hill Climbing")

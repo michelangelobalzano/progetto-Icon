@@ -2,6 +2,7 @@ from hill_climbing import *
 from simulated_annealing import *
 from tabu_search import *
 from most_improving_step import *
+from algoritmo_genetico import *
 from preprocessing import preprocessing
 from input_manager import *
 import os
@@ -19,6 +20,7 @@ NUMERO_TEST = 500
 # Valori utilizzati per il calcolo di una singola formazione
 MAX_ITERAZIONI = 500
 TASSO_RAFFREDDAMENTO = 0.005
+NUM_GENERAZIONI = 500
 
 ######################################################################################################################
 # Metodo per la pulizia dello schermo
@@ -51,9 +53,10 @@ def test_algoritmi():
     print("2 = Tabu Search")
     print("3 = Simulated Annealing")
     print("4 = Most Improving Step")
+    print("5 = Algoritmo genetico")
     while True:
         scelta = int(input("Inserire scelta: "))
-        if(scelta >= 1 and scelta <= 4):
+        if(scelta >= 1 and scelta <= 5):
             break
         else:
             print("Scelta non valida!")
@@ -67,6 +70,8 @@ def test_algoritmi():
         test_sa(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
     elif (scelta == 4):
         test_mis(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
+    elif (scelta == 5):
+        test_ag(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
 
 ######################################################################################################################
 # Confronto tra tutti gli algoritmi
@@ -80,10 +85,11 @@ def confronto_algoritmi():
     ris_ts = risultati_ts(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
     ris_sa = risultati_sa(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
     ris_mis = risultati_mis(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
+    ris_ag = risultati_ag(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
 
     # Creazione grafico confronto
-    plt.boxplot([ris_hc, ris_ts, ris_sa, ris_mis], 
-                labels=['HC', 'TS', 'SA', 'MIS'])
+    plt.boxplot([ris_hc, ris_ts, ris_sa, ris_mis, ris_ag], 
+                labels=['HC', 'TS', 'SA', 'MIS', 'AG'])
     plt.ylabel('Valutazione')
     plt.title('Confronto risultati degli algoritmi')
     plt.savefig("CSP/grafici/confronto.png")
@@ -98,9 +104,10 @@ def calcolo_singolo():
     print("2 = Tabu Search")
     print("3 = Simulated Annealing")
     print("4 = Most Improving Step")
+    print("5 = Algoritmo genetico")
     while True:
         scelta = int(input("Inserire scelta: "))
-        if(scelta >= 1 and scelta <= 4):
+        if(scelta >= 1 and scelta <= 5):
             break
         else:
             print("Scelta non valida!")
@@ -123,5 +130,7 @@ def calcolo_singolo():
         formazione = simulated_annealing(modulo, lista_calciatori, budget, TASSO_RAFFREDDAMENTO)
     elif (scelta == 4):
         formazione = most_improving_step(modulo, lista_calciatori, budget, MAX_ITERAZIONI)
+    elif (scelta == 5):
+        formazione = algoritmo_genetico(modulo, lista_calciatori, budget, NUM_GENERAZIONI)
 
     stampa(formazione)

@@ -6,6 +6,17 @@ import matplotlib.pyplot as plt
 TASSO_PEGGIORAMENTO = 1.03
 
 ######################################################################################################################
+# Metodo per la creazione del grafico del test dell'algoritmo
+def grafico(risultati, lista):
+    plt.plot(lista, risultati, marker='o')
+    plt.xlabel('Numero massimo di iterazioni')
+    plt.ylabel('Overall medio ottenuto')
+    plt.title('Algoritmo Most Improving Step')
+    plt.grid(True)
+    plt.savefig("CSP/grafici/mis.png")
+    plt.show()
+
+######################################################################################################################
 # Metodo per il test dell'algoritmo
 def test_mis(modulo, lista_calciatori, budget, numero_test):
     lista_max_iterazioni = [20, 50, 100, 200, 500] # Lista max iterazioni da testare
@@ -94,17 +105,4 @@ def most_improving_step(modulo, lista_calciatori, budget, max_iterazioni):
         
         iterazioni = iterazioni + 1
 
-    return formazione
-
-######################################################################################################################
-# Metodo per la creazione del grafico del test dell'algoritmo
-def grafico(risultati, lista):
-    plt.plot(lista, risultati, marker='o')
-    plt.xlabel('Numero massimo di iterazioni')
-    plt.ylabel('Overall medio ottenuto')
-    plt.title('Algoritmo Most Improving Step')
-    plt.grid(True)
-    plt.savefig("CSP/grafici/mis.png")
-    plt.show()
-
-        
+    return formazione        

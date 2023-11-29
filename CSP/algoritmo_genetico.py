@@ -6,10 +6,57 @@ from preprocessing import preprocessing
 import numpy as np
 
 ######################################################################################################################
-# Percentuale di peggioramento consentito
-TASSO_PEGGIORAMENTO = 1.03
-DIMENSIONE_POPOLAZIONE = 50
-NUMERO_GENERAZIONI = 500
+TASSO_PEGGIORAMENTO = 1.03 # Percentuale peggioramento consentito
+DIMENSIONE_POPOLAZIONE = 50 # Numero di individui
+
+######################################################################################################################
+# Metodo per la creazione del grafico del test dell'algoritmo
+def grafico(risultati, lista):
+    plt.plot(lista, risultati, marker='o')
+    plt.xlabel('Numero di generazioni')
+    plt.ylabel('Overall medio ottenuto')
+    plt.title('Algoritmo genetico')
+    plt.grid(True)
+    plt.savefig("CSP/grafici/ag.png")
+    plt.show()
+
+######################################################################################################################
+# Metodo per il test dell'algoritmo
+def test_ag(modulo, lista_calciatori, budget, numero_test):
+    lista_generazioni = [20, 50, 100, 200, 500] # Lista max iterazioni da testare
+    risultati = [] # Risultati ottenuti per ogni valore di max iterazioni
+
+    # Test per ogni valore di max iterazioni
+    for g in lista_generazioni:
+
+        # Risultati dei singoli test sul valore max iterazioni
+        somma = 0
+
+        print("Num Generazioni: ", g)
+        # Effettuazione del singolo test
+        for _ in range(numero_test):
+            formazione = algoritmo_genetico(modulo, lista_calciatori, budget, g)
+            _, overall = punteggi(formazione)
+            somma = somma + overall
+
+        # Inserimento del risultato ottenuto con il valore di num generazioni
+        media = round(somma / numero_test, 2)
+        risultati.append(media)
+        print("Media: ", media)
+
+    grafico(risultati, lista_generazioni)
+
+######################################################################################################################
+# Metodo per ottenere i risultati per il confronto degli algoritmi
+def risultati_ag(modulo, lista_calciatori, budget, numero_test):
+    num_generazioni = 500
+    risultati = []
+    # Effettuazione del singolo test
+    for _ in range(numero_test):
+        formazione = algoritmo_genetico(modulo, lista_calciatori, budget, num_generazioni)
+        _, overall = punteggi(formazione)
+        risultati.append(overall)
+    return risultati
 
 ######################################################################################################################
 # Funzione di fitness che associa un punteggio a una formazione
@@ -19,7 +66,7 @@ def fitness(individuo, budget):
         return overall
     else:
         return 0
-    
+
 ######################################################################################################################
 # Funzione di selezione dei genitori per il crossover in base ad una probabilità dipendente dal fitness
 def roulette_wheel_selection(popolazione, valutazioni):
@@ -79,7 +126,7 @@ def crossover(genitore1, genitore2):
 
 ######################################################################################################################
 # Mutazione (scambio casuale di due calciatori)
-def mutate(individuo, lista_calciatori):
+def mutazione(individuo, lista_calciatori):
     
     max_prove = 5
     prove = 0
@@ -110,12 +157,12 @@ def mutate(individuo, lista_calciatori):
 
 ######################################################################################################################
 # Algoritmo Genetico
-def genetic_algorithm(modulo, lista_calciatori, budget):
+def algoritmo_genetico(modulo, lista_calciatori, budget, num_generazioni):
 
     # Creazione della popolazione
     popolazione = [random_restart(modulo, lista_calciatori, budget) for _ in range(DIMENSIONE_POPOLAZIONE)]
 
-    for generazione in range(NUMERO_GENERAZIONI):
+    for generazione in range(num_generazioni):
         # Creazione vettore contenente la valutazione per ogni individuo
         valutazioni = [fitness(individuo, budget) for individuo in popolazione]
 
@@ -133,8 +180,8 @@ def genetic_algorithm(modulo, lista_calciatori, budget):
             figlio1, figlio2 = crossover(genitore1, genitore2)
 
             # Mutazione
-            figlio1 = mutate(figlio1, lista_calciatori)
-            figlio2 = mutate(figlio2, lista_calciatori)
+            figlio1 = mutazione(figlio1, lista_calciatori)
+            figlio2 = mutazione(figlio2, lista_calciatori)
 
             # Inserimento dei figli nella nuova generazione
             nuova_generazione.append(figlio1)
@@ -142,17 +189,7 @@ def genetic_algorithm(modulo, lista_calciatori, budget):
 
         popolazione = nuova_generazione
 
-    # Restituisci il miglior individuo
+    # Restituire il miglior individuo
     popolazione_ordinata = sorted(popolazione, key=lambda x: fitness(x, budget), reverse=True)
     miglior_individuo = popolazione_ordinata[0] if popolazione_ordinata else ()
     return miglior_individuo
-
-# Esempio di utilizzo
-modulo = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 
-        'Terzino destro', 'Centrocampista centrale', 'Mediano', 'Centrocampista centrale', 
-        'Ala sinistra', 'Prima punta', 'Ala destra']
-lista_calciatori = preprocessing()
-budget = 350
-
-miglior_formazione = genetic_algorithm(modulo, lista_calciatori, budget)
-stampa(miglior_formazione)

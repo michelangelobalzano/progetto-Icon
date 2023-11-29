@@ -2,8 +2,18 @@ from ricerca_locale import *
 import matplotlib.pyplot as plt
 
 ######################################################################################################################
-# Percentuale di peggioramento consentito
-TASSO_PEGGIORAMENTO = 1.03
+TASSO_PEGGIORAMENTO = 1.03 # Percentuale di peggioramento consentito
+
+######################################################################################################################
+# Metodo per la creazione del grafico del test dell'algoritmo
+def grafico(risultati, lista):
+    plt.plot(lista, risultati, marker='o')
+    plt.xlabel('Numero massimo di iterazioni')
+    plt.ylabel('Overall medio ottenuto')
+    plt.title('Algoritmo Hill Climbing')
+    plt.grid(True)
+    plt.savefig("CSP/grafici/hc.png")
+    plt.show()
 
 ######################################################################################################################
 # Metodo per il test dell'algoritmo
@@ -83,14 +93,3 @@ def hill_climbing(modulo, lista_calciatori, budget, max_iterazioni):
             break
 
     return formazione
-
-######################################################################################################################
-# Metodo per la creazione del grafico del test dell'algoritmo
-def grafico(risultati, lista):
-    plt.plot(lista, risultati, marker='o')
-    plt.xlabel('Numero massimo di iterazioni')
-    plt.ylabel('Overall medio ottenuto')
-    plt.title('Algoritmo Hill Climbing')
-    plt.grid(True)
-    plt.savefig("CSP/grafici/hc.png")
-    plt.show()

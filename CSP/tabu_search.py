@@ -6,6 +6,17 @@ DIMENSIONE_LISTA_TABU = 50
 TASSO_PEGGIORAMENTO = 1.03
 
 ######################################################################################################################
+# Metodo per la creazione del grafico del test dell'algoritmo
+def grafico(risultati, lista):
+    plt.plot(lista, risultati, marker='o')
+    plt.xlabel('Numero massimo di iterazioni')
+    plt.ylabel('Overall medio ottenuto')
+    plt.title('Algoritmo Tabu Search')
+    plt.grid(True)
+    plt.savefig("CSP/grafici/ts.png")
+    plt.show()
+
+######################################################################################################################
 # Metodo per il test dell'algoritmo
 def test_ts(modulo, lista_calciatori, budget, numero_test):
     lista_max_iterazioni = [20, 50, 100, 200, 500] # Lista max iterazioni da testare
@@ -90,14 +101,3 @@ def tabu_search(modulo, lista_calciatori, budget, max_iterazioni):
         if iterazioni == max_iterazioni:
             break
     return formazione
-
-######################################################################################################################
-# Metodo per la creazione del grafico del test dell'algoritmo
-def grafico(risultati, lista):
-    plt.plot(lista, risultati, marker='o')
-    plt.xlabel('Numero massimo di iterazioni')
-    plt.ylabel('Overall medio ottenuto')
-    plt.title('Algoritmo Tabu Search')
-    plt.grid(True)
-    plt.savefig("CSP/grafici/ts.png")
-    plt.show()

@@ -4,9 +4,12 @@ import albero_decisionale as ad
 import knn
 import random_forest as rf
 
-# preparazione dei dati di training e set
+######################################################################################################################
+# Preparazione dei dati di training e set
 training_x, training_y, test_x, test_y = preprocessing()
     
+######################################################################################################################
+print("APPRENDIMENTO SUPERVISIONATO\n")
 print("1: regressione lineare")
 print("2: alberi decisionali")
 print("3: knn")

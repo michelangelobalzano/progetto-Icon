@@ -2,7 +2,10 @@ from sklearn.tree import DecisionTreeRegressor
 import apprendimento as ap
 import creazione_grafici as cg
 
+######################################################################################################################
+# Algoritmo albero decisionale
 def albero_decisionale(training_x, training_y, test_x, test_y):
+    
     rmse_training = []
     medie_training = [] # array per conservare le medie sul training set
     medie_test = [] # array per conservare le medie sul test set

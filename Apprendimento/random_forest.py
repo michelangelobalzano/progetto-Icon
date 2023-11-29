@@ -4,8 +4,10 @@ import creazione_grafici as cg
 
 MAX_FEATURES = 8
 
-# metodo che restituisce il miglior numero di alberi per il random forest
+######################################################################################################################
+# Metodo che restituisce il miglior numero di alberi per il random forest
 def n_alberi(training_x, training_y, test_x, test_y):
+
     rmse_training = []
     medie_training = [] # array per conservare le medie sul training set
     medie_test = [] # array per conservare le medie sul test set
@@ -38,7 +40,10 @@ def n_alberi(training_x, training_y, test_x, test_y):
     # restituzione del numero di alberi corrispondente al risultato minimo del test
     return lista_n_alberi[medie_test.index(min(medie_test))]
 
+######################################################################################################################
+# Algoritmo random forest
 def random_forest(training_x, training_y, test_x, test_y):
+
     rmse_training = []
     medie_training = [] # array per conservare le medie sul training set
     medie_test = [] # array per conservare le medie sul test set

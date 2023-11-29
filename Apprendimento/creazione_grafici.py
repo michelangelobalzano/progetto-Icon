@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
-import numpy as np
 
+######################################################################################################################
+# Stampa grafico regressione lineare
 def grafico_rl(rmse, media, rmse_finale):
     labels = ['Train RMSE', 'K-fold RMSE', 'Test RMSE']
     heights = [rmse, media, rmse_finale]
@@ -10,6 +11,8 @@ def grafico_rl(rmse, media, rmse_finale):
     plt.savefig("Apprendimento/grafici/rl.png")
     plt.show()
 
+######################################################################################################################
+# Stampa grafico albero decisionale
 def grafico_ad(lista_profondita, rmse_training, medie_training, medie_test):
     plt.figure(figsize=(10, 6))
     plt.plot(lista_profondita, rmse_training, label='Train RMSE')
@@ -22,6 +25,8 @@ def grafico_ad(lista_profondita, rmse_training, medie_training, medie_test):
     plt.savefig("Apprendimento/grafici/ad.png")
     plt.show()
 
+######################################################################################################################
+# Stampa grafico knn
 def grafico_knn(lista_k, rmse, medie_training, medie_test):
     plt.figure(figsize=(10, 6))
     plt.plot(lista_k, rmse, label='Train RMSE')
@@ -34,6 +39,8 @@ def grafico_knn(lista_k, rmse, medie_training, medie_test):
     plt.savefig("Apprendimento/grafici/knn.png")
     plt.show()
 
+######################################################################################################################
+# Stampa grafico random forest al variare del numero di alberi
 def grafico_rf_n_alberi(lista_n_alberi, rmse, medie_training, medie_test):
     plt.figure(figsize=(10, 6))
     plt.plot(lista_n_alberi, rmse, label='Train RMSE')
@@ -46,6 +53,8 @@ def grafico_rf_n_alberi(lista_n_alberi, rmse, medie_training, medie_test):
     plt.savefig("Apprendimento/grafici/rf_n_alberi.png")
     plt.show()
 
+######################################################################################################################
+# Stampa grafico random forest al variare della profondita massima
 def grafico_rf_profondita(lista_profondita, rmse, medie_training, medie_test):
     plt.figure(figsize=(10, 6))
     plt.plot(lista_profondita, rmse, label='Train RMSE')

@@ -1,7 +1,9 @@
 from sklearn.model_selection import train_test_split # per splittare in due sezioni il dataset
 import pandas as pd
 
+######################################################################################################################
 def preprocessing():
+
     # lettura del dataset
     dataset = pd.read_csv("dataset\dataset.csv")
 

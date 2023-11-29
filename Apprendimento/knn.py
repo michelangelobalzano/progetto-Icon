@@ -2,7 +2,10 @@ from sklearn.neighbors import KNeighborsRegressor
 import apprendimento as ap
 import creazione_grafici as cg
 
+######################################################################################################################
+# Algoritmo kNN 
 def knn(training_x, training_y, test_x, test_y):
+    
     medie_training = [] # array per conservare le medie sul training set
     medie_test = [] # array per conservare le medie sul test set
     rmse_training = []

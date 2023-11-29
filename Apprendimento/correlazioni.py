@@ -11,10 +11,13 @@ colonne = ['Overall','Crossing','Finishing','Heading Accuracy','Short Passing','
 # rimozione delle colonne che non servono
 dataset_troncato = dataset[colonne]
 
+# ricerca delle correlazioni
 correlazioni = dataset_troncato.corr()
 
-print(correlazioni['Overall'].sort_values(ascending=False))
-
+# selezione dei migliori 5 attributi
 attributi = ['Overall', 'Reactions', 'Composure', 'Shot Power', 'Vision', 'Short Passing']
-scatter_matrix(dataset_troncato[attributi], figsize=(15,12))
+
+# creazione del grafico
+scatter_matrix(dataset_troncato[attributi], figsize=(10,10))
+plt.savefig("Apprendimento/grafici/correlazioni.png")
 plt.show()

@@ -2,7 +2,10 @@ from sklearn.linear_model import LinearRegression
 import apprendimento as ap
 import creazione_grafici as cg
 
+######################################################################################################################
+# Algoritmo regressione lineare
 def regressione_lineare(training_x, training_y, test_x, test_y):
+    
     # definizione del modello
     modello = LinearRegression()
 

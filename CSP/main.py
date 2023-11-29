@@ -1,4 +1,4 @@
-from main_manager import *
+from main_manager import calcolo_singolo, test_algoritmi, confronto_algoritmi, clearConsole
 
 ######################################################################################################################
 # Main

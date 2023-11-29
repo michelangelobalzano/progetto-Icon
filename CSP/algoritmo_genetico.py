@@ -1,9 +1,6 @@
-from main_manager import *
 import random
-import math
 from ricerca_locale import *
-from preprocessing import preprocessing
-import numpy as np
+import matplotlib.pyplot as plt
 
 ######################################################################################################################
 TASSO_PEGGIORAMENTO = 1.03 # Percentuale peggioramento consentito

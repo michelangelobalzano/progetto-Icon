@@ -1,12 +1,15 @@
-from hill_climbing import *
-from simulated_annealing import *
-from tabu_search import *
-from most_improving_step import *
-from algoritmo_genetico import *
 from preprocessing import preprocessing
 from input_manager import *
-import os
+import os # Per metodo ClearConsole()
 from ricerca_locale import punteggi
+import matplotlib.pyplot as plt
+
+# Algoritmi
+from hill_climbing import hill_climbing, test_hc, risultati_hc
+from simulated_annealing import simulated_annealing, test_sa, risultati_sa
+from tabu_search import tabu_search, test_ts, risultati_ts
+from most_improving_step import most_improving_step, test_mis, risultati_mis
+from algoritmo_genetico import algoritmo_genetico, test_ag, risultati_ag
 
 ######################################################################################################################
 # Valori utilizzati per il test e per il confronto di algoritmi
@@ -34,7 +37,7 @@ def clearConsole():
 # Metodo per la stampa di una singola formazione sottoforma di tabella
 def stampa(formazione):
     for calciatore in formazione:
-        print(calciatore[0], "\t", calciatore[2], "\t", calciatore[1])
+        print(calciatore[0], " ", calciatore[2], " ", calciatore[1])
     costo, overall = punteggi(formazione)
     print("Costo totale: ", costo)
     print("Overall medio: ", overall)

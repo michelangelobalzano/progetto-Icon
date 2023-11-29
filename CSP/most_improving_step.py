@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 ######################################################################################################################
 # Percentuale di peggioramento consentito
-TASSO_PEGGIORAMENTO = 0.03
+TASSO_PEGGIORAMENTO = 1.03
 
 ######################################################################################################################
 # Metodo per il test dell'algoritmo

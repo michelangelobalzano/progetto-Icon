@@ -8,6 +8,7 @@ TASSO_PEGGIORAMENTO = 1.03
 ######################################################################################################################
 # Metodo per la creazione del grafico del test dell'algoritmo
 def grafico(risultati, lista):
+
     plt.plot(lista, risultati, marker='o')
     plt.xlabel('Numero massimo di iterazioni')
     plt.ylabel('Overall medio ottenuto')
@@ -19,7 +20,8 @@ def grafico(risultati, lista):
 ######################################################################################################################
 # Metodo per il test dell'algoritmo
 def test_ts(modulo, lista_calciatori, budget, numero_test):
-    lista_max_iterazioni = [20, 50, 100, 200, 500] # Lista max iterazioni da testare
+
+    lista_max_iterazioni = [50, 100, 200, 500] # Lista max iterazioni da testare
     risultati = [] # Risultati ottenuti per ogni valore di max iterazioni
 
     # Test per ogni valore di max iterazioni
@@ -38,12 +40,14 @@ def test_ts(modulo, lista_calciatori, budget, numero_test):
         media = round(somma / numero_test, 2)
         risultati.append(media)
 
+        print("num iterazioni ", m, ": ", media)
+
     grafico(risultati, lista_max_iterazioni)
 
 ######################################################################################################################
 # Metodo per ottenere i risultati per il confronto degli algoritmi
-def risultati_ts(modulo, lista_calciatori, budget, numero_test):
-    max_iterazioni = 500
+def risultati_ts(modulo, lista_calciatori, budget, numero_test, max_iterazioni):
+    
     risultati = []
     # Effettuazione del singolo test
     for _ in range(numero_test):
@@ -55,6 +59,7 @@ def risultati_ts(modulo, lista_calciatori, budget, numero_test):
 ######################################################################################################################
 # Funzione di valutazione
 def valutazione(c1, c2, o1, o2, oc1, oc2, budget):
+    
     return ((c2 < budget) and (o1 < o2) or ((c2 < c1) and (oc1 <= oc2 * TASSO_PEGGIORAMENTO)))
 
 ######################################################################################################################

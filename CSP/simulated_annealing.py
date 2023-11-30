@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 ######################################################################################################################
 # Temperatura iniziale da raffreddare
-TEMPERATURA_INIZIALE = 2000
+TEMPERATURA_INIZIALE = 5000
 
 ######################################################################################################################
 # Metodo per la creazione del grafico del test dell'algoritmo
@@ -21,7 +21,8 @@ def grafico(risultati, lista):
 ######################################################################################################################
 # Metodo per il test dell'algoritmo
 def test_sa(modulo, lista_calciatori, budget, numero_test):
-    lista_tassi_raffreddamento = [0.02, 0.015, 0.01, 0.005, 0.002] # Lista tassi di raffreddamento da testare
+
+    lista_tassi_raffreddamento = [0.015, 0.01, 0.005, 0.002] # Lista tassi di raffreddamento da testare
     risultati = [] # Risultati ottenuti per ogni valore di tassi di raffreddamento
 
     # Test per ogni valore di tassi di raffreddamento
@@ -40,12 +41,14 @@ def test_sa(modulo, lista_calciatori, budget, numero_test):
         media = round(somma / numero_test, 2)
         risultati.append(media)
 
+        print("num iterazioni ", tr, ": ", media)
+
     grafico(risultati, lista_tassi_raffreddamento)
 
 ######################################################################################################################
 # Metodo per ottenere i risultati per il confronto degli algoritmi
-def risultati_sa(modulo, lista_calciatori, budget, numero_test):
-    tasso_raffreddamento = 0.002
+def risultati_sa(modulo, lista_calciatori, budget, numero_test, tasso_raffreddamento):
+    
     risultati = []
     # Effettuazione del singolo test
     for _ in range(numero_test):

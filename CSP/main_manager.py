@@ -4,6 +4,7 @@ import os # Per metodo ClearConsole()
 from ricerca_locale import punteggi
 import matplotlib.pyplot as plt
 from prettytable import PrettyTable
+import numpy as np
 
 # Algoritmi
 from hill_climbing import hill_climbing, test_hc, risultati_hc
@@ -16,14 +17,14 @@ from algoritmo_genetico import algoritmo_genetico, test_ag, risultati_ag
 # Valori utilizzati per il test e per il confronto di algoritmi
 MODULO = ['Portiere', 'Terzino sinistro', 'Difensore centrale', 'Difensore centrale', 
             'Terzino destro', 'Centrocampista centrale', 'Mediano', 'Centrocampista centrale', 
-            'Ala sinistra', 'Prima punta', 'Ala destra']
+            'Ala sinistra', 'Prima punta', 'Ala destra'] # 4-3-3
 BUDGET = 350
-NUMERO_TEST = 500
+NUMERO_TEST = 50
 
 ######################################################################################################################
-# Valori utilizzati per il calcolo di una singola formazione
+# Valori utilizzati per il confronto di algoritmi e per il calcolo singolo
 MAX_ITERAZIONI = 500
-TASSO_RAFFREDDAMENTO = 0.005
+TASSO_RAFFREDDAMENTO = 0.002
 NUM_GENERAZIONI = 500
 
 ######################################################################################################################
@@ -97,11 +98,16 @@ def confronto_algoritmi():
     lista_calciatori = preprocessing()
 
     # Recupero vettore dei risultati da ogni algoritmo
-    ris_hc = risultati_hc(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
-    ris_ts = risultati_ts(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
-    ris_sa = risultati_sa(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
-    ris_mis = risultati_mis(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
-    ris_ag = risultati_ag(MODULO, lista_calciatori, BUDGET, NUMERO_TEST)
+    ris_hc = risultati_hc(MODULO, lista_calciatori, BUDGET, NUMERO_TEST, MAX_ITERAZIONI)
+    print("Media HC: ", np.mean(ris_hc))
+    ris_ts = risultati_ts(MODULO, lista_calciatori, BUDGET, NUMERO_TEST, MAX_ITERAZIONI)
+    print("Media TS: ", np.mean(ris_ts))
+    ris_sa = risultati_sa(MODULO, lista_calciatori, BUDGET, NUMERO_TEST, TASSO_RAFFREDDAMENTO)
+    print("Media SA: ", np.mean(ris_sa))
+    ris_mis = risultati_mis(MODULO, lista_calciatori, BUDGET, NUMERO_TEST, MAX_ITERAZIONI)
+    print("Media MIS: ", np.mean(ris_mis))
+    ris_ag = risultati_ag(MODULO, lista_calciatori, BUDGET, NUMERO_TEST, NUM_GENERAZIONI)
+    print("Media AG: ", np.mean(ris_ag))
 
     # Creazione grafico confronto
     plt.boxplot([ris_hc, ris_ts, ris_sa, ris_mis, ris_ag], 

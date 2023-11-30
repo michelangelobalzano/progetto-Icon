@@ -9,6 +9,7 @@ DIMENSIONE_POPOLAZIONE = 50 # Numero di individui
 ######################################################################################################################
 # Metodo per la creazione del grafico del test dell'algoritmo
 def grafico(risultati, lista):
+
     plt.plot(lista, risultati, marker='o')
     plt.xlabel('Numero di generazioni')
     plt.ylabel('Overall medio ottenuto')
@@ -20,7 +21,8 @@ def grafico(risultati, lista):
 ######################################################################################################################
 # Metodo per il test dell'algoritmo
 def test_ag(modulo, lista_calciatori, budget, numero_test):
-    lista_generazioni = [20, 50, 100, 200, 500] # Lista max iterazioni da testare
+
+    lista_generazioni = [50, 100, 200, 500] # Lista max iterazioni da testare
     risultati = [] # Risultati ottenuti per ogni valore di max iterazioni
 
     # Test per ogni valore di max iterazioni
@@ -29,7 +31,6 @@ def test_ag(modulo, lista_calciatori, budget, numero_test):
         # Risultati dei singoli test sul valore max iterazioni
         somma = 0
 
-        print("Num Generazioni: ", g)
         # Effettuazione del singolo test
         for _ in range(numero_test):
             formazione = algoritmo_genetico(modulo, lista_calciatori, budget, g)
@@ -39,14 +40,15 @@ def test_ag(modulo, lista_calciatori, budget, numero_test):
         # Inserimento del risultato ottenuto con il valore di num generazioni
         media = round(somma / numero_test, 2)
         risultati.append(media)
-        print("Media: ", media)
+
+        print("num iterazioni ", g, ": ", media)
 
     grafico(risultati, lista_generazioni)
 
 ######################################################################################################################
 # Metodo per ottenere i risultati per il confronto degli algoritmi
-def risultati_ag(modulo, lista_calciatori, budget, numero_test):
-    num_generazioni = 500
+def risultati_ag(modulo, lista_calciatori, budget, numero_test, num_generazioni):
+    
     risultati = []
     # Effettuazione del singolo test
     for _ in range(numero_test):
@@ -58,6 +60,7 @@ def risultati_ag(modulo, lista_calciatori, budget, numero_test):
 ######################################################################################################################
 # Funzione di fitness che associa un punteggio a una formazione
 def fitness(individuo, budget):
+
     costo, overall = punteggi(individuo)
     if costo <= budget:
         return overall
@@ -67,6 +70,7 @@ def fitness(individuo, budget):
 ######################################################################################################################
 # Funzione di selezione dei genitori per il crossover in base ad una probabilità dipendente dal fitness
 def roulette_wheel_selection(popolazione, valutazioni):
+
     somma_fitness = sum(valutazioni)
     probabilita_selezione = [fitness / somma_fitness for fitness in valutazioni]
 
@@ -79,6 +83,7 @@ def roulette_wheel_selection(popolazione, valutazioni):
 ######################################################################################################################
 # Funzione di controllo duplicati nei figli del crossover
 def senza_duplicati(individuo):
+    
     calciatori_visti = set()
     for c in individuo:
         if c in calciatori_visti:

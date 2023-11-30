@@ -65,7 +65,7 @@ def hill_climbing(modulo, lista_calciatori, budget, max_iterazioni):
     iterazioni = 0
 
     # Walk
-    while True:
+    while (iterazioni < max_iterazioni):
         costo, overall = punteggi(formazione)
 
         # Per ogni posizione si prova ad effettuare una sostituzione
@@ -89,7 +89,5 @@ def hill_climbing(modulo, lista_calciatori, budget, max_iterazioni):
                 overall = overall_nuovo
                 
         iterazioni = iterazioni + 1
-        if iterazioni == max_iterazioni:
-            break
 
     return formazione

@@ -1,13 +1,7 @@
 import matplotlib.pyplot as plt
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
 from preprocessing import preprocessing
 import apprendimento as ap
-
-######################################################################################################################
-# migliori valori degli iperparametri
-N_ESTIMATORS = 25
-MAX_DEPTH = 20
-MAX_FEATURES = 8
 
 ######################################################################################################################
 # Creazione grafico di dispersione random forest
@@ -15,7 +9,7 @@ MAX_FEATURES = 8
 training_x, training_y, test_x, test_y = preprocessing()
 
 # definizione del modello
-modello = RandomForestRegressor(n_estimators=N_ESTIMATORS, max_depth=MAX_DEPTH, max_features=MAX_FEATURES)
+modello = LinearRegression()
 
 # calcolo dell'rmse sugli esempi di training
 modello, rmse = ap.train(modello, training_x, training_y)
@@ -35,6 +29,6 @@ plt.scatter(target, predizioni, color='tab:blue')
 plt.plot([min(target), max(target)], [min(target), max(target)], linestyle='--', color='tab:orange', linewidth=2)
 plt.xlabel('Valori Attesi')
 plt.ylabel('Predizioni del Modello')
-plt.title('Dispersione random forest')
-plt.savefig("Apprendimento/grafici/dispersione_rf.png")
+plt.title('Dispersione regressione lineare')
+plt.savefig("Apprendimento/grafici/dispersione_rl.png")
 plt.show()

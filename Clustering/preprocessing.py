@@ -2,13 +2,14 @@ from sklearn.model_selection import train_test_split # per splittare in due sezi
 import pandas as pd
 
 ######################################################################################################################
+# Preprocessing del dataset
 def preprocessing():
 
     # lettura del dataset
     dataset = pd.read_csv("dataset\dataset.csv")
 
     # attrubuti da lasciare
-    colonne = ['Crossing','Finishing','Heading Accuracy','Short Passing', 'Volleys',
+    colonne = ['Known As', 'Crossing','Finishing','Heading Accuracy','Short Passing', 'Volleys',
                'Dribbling','Curve','Freekick Accuracy','LongPassing','BallControl',
                'Acceleration','Sprint Speed','Agility','Reactions','Balance','Shot Power',
                'Jumping','Stamina','Strength','Long Shots','Aggression','Interceptions',
@@ -22,6 +23,4 @@ def preprocessing():
     # esportare il dataset su file
     dataset_troncato.to_csv("dataset\dataset_clustering.csv", index = False)
 
-    nomi_giocatori = dataset['Known As']
-
-    return dataset_troncato, nomi_giocatori
+    return dataset_troncato

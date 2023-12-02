@@ -1,13 +1,48 @@
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+from pca import pca
 
 NUM_CLUSTERS = 4 # Numero di clusters
-CALCIATORI_PER_CLUSTER = 4 # Calciatori da mostrare per cluster
+CALCIATORI_PER_CLUSTER = 4 # Calciatori da mostrare per grafico_cluster
+NUM_CALCIATORI_MIGLIORI = 30 # Migliori calciatori per grafico_migliori
 # Mappa dei colori per cluster
 mappa_colori = {0: 'lightgreen', 
                 1: 'skyblue', 
                 2: 'lightcoral', 
                 3: 'gold'}
+
+######################################################################################################################
+# Creazione grafico dei cluster
+def grafico_cluster(dataset, centroidi):
+    plt.figure(figsize=(6, 5))
+    for num_cluster in range(NUM_CLUSTERS):
+        dati_cluster = dataset[dataset['Cluster'] == num_cluster]
+        plt.scatter(dati_cluster['PC1'], dati_cluster['PC2'], c=mappa_colori.get(num_cluster), s=10, alpha=0.7, label=f'Cluster {num_cluster + 1}')
+        migliori = dati_cluster.head(CALCIATORI_PER_CLUSTER)
+        for i, (x, y, txt) in enumerate(zip(migliori['PC1'], migliori['PC2'], migliori['Known As'])):
+            plt.annotate(txt, (x, y), fontsize=8, color='black')
+    # Aggiunta centroidi
+    plt.scatter(centroidi[:, 0], centroidi[:, 1], c='black', marker='.', s=20, label='Centroidi')
+    # Aggiunta legenda e titoli
+    plt.legend(title='Clusters', loc='upper right')
+    plt.title('K-Means Clustering')
+    plt.xlabel('Prima componente principale')
+    plt.ylabel('Seconda componente principale')
+    #plt.savefig("Clustering/grafici/k_means.png")
+    plt.show()
+
+######################################################################################################################
+# Creazione grafico migliori calciatori
+def grafico_migliori_calciatori(dataset):
+    plt.figure(figsize=(6, 6))
+    for index, player in dataset.iterrows():
+        plt.axhline(y=player['Known As'], color='red', linestyle='--', linewidth=1, alpha=0.8)
+        plt.scatter(player['Cluster'], player['Known As'], color=mappa_colori[player["Cluster"]], s=40)
+    plt.title(f'Clustering dei migliori {NUM_CALCIATORI_MIGLIORI} calciatori')
+    plt.xlabel('Cluster')
+    plt.ylabel('Nome Giocatore')
+    #plt.savefig("Clustering/grafici/cluster_migliori.png")
+    plt.show()
 
 ######################################################################################################################
 # K-means intero dataset
@@ -23,23 +58,21 @@ def k_means(dataset):
     # Acquisizione punti centroidi dei clusters
     centroidi = kmeans.cluster_centers_
 
-    # Ordinamento del dataset per Cluster e per prima componente principale
-    dataset = dataset.sort_values(by=['Cluster', 'PC1'], ascending=[True, True])
-
     # Creazione grafico dei clusters
-    for num_cluster in range(NUM_CLUSTERS):
-        dati_cluster = dataset[dataset['Cluster'] == num_cluster]
-        plt.scatter(dati_cluster['PC1'], dati_cluster['PC2'], c=mappa_colori.get(num_cluster), s=10, alpha=0.7, label=f'Cluster {num_cluster + 1}')
-        migliori = dati_cluster.head(CALCIATORI_PER_CLUSTER)
-        for i, (x, y, txt) in enumerate(zip(migliori['PC1'], migliori['PC2'], migliori['Known As'])):
-            plt.annotate(txt, (x, y), fontsize=8, color='black')
+    grafico_cluster(dataset, centroidi)
 
-    # Aggiunta centroidi
-    plt.scatter(centroidi[:, 0], centroidi[:, 1], c='black', marker='.', s=20, label='Centroidi')
+    # Creazione grafico migliori calciatori
+    migliori = dataset.head(NUM_CALCIATORI_MIGLIORI).iloc[::-1]
 
-    plt.legend(title='Clusters', loc='upper right')
-    plt.title('K-Means Clustering')
-    plt.xlabel('Prima componente principale')
-    plt.ylabel('Seconda componente principale')
-    #plt.savefig("Clustering/grafici/k_means.png")
-    plt.show()
+    # Creazione grafico dei migliori calciatori
+    grafico_migliori_calciatori(migliori)
+    
+######################################################################################################################
+# Metodo principale per la creazione dei grafici di clustering
+def clustering():
+
+    dataset_pca = pca()
+
+    k_means(dataset_pca)
+    
+    

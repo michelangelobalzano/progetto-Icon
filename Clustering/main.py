@@ -1,7 +1,10 @@
-from preprocessing import preprocessing
-from pca import pca
-from k_means import k_means
+from k_means import clustering
+from analisi_reparti import analisi_reparti
+from analisi_similarita import analisi_similarita
 
-dataset_pca = pca()
+analisi_reparti()
 
-k_means(dataset_pca)
+#clustering()
+
+#analisi_similarita("L. Messi")
+#analisi_similarita("C. Immobile")

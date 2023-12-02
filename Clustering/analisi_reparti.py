@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from preprocessing import preprocessing
 from pca import pca
 
 # Mappatura di ogni posizione in un reparto
@@ -14,9 +13,9 @@ mappa_posizioni = {'GK': 'Portiere',
                    'CM': 'Centrocampista',
                    'LM': 'Centrocampista',
                    'RM': 'Centrocampista',
-                   'CAM': 'Centrocampista',
-                   'LW': 'Centrocampista',
-                   'RW': 'Centrocampista',
+                   'CAM': 'Attaccante',
+                   'LW': 'Attaccante',
+                   'RW': 'Attaccante',
                    'CF': 'Attaccante',
                    'ST': 'Attaccante'
 }
@@ -26,7 +25,8 @@ mappa_colori = {'Portiere': 'skyblue',
                 'Centrocampista': 'lightgreen', 
                 'Attaccante': 'gold'}
 
-CALCIATORI_PER_CLUSTER = 4 # Numero di calciatori da mostrare per reparto
+CALCIATORI_PER_CLUSTER = 4 # Numero di calciatori da mostrare per grafico_reparti_PCA
+NUM_CALCIATORI_MIGLIORI = 30 # Numero dei migliori calciatori per grafico_migliori
 
 ######################################################################################################################
 # Stampa grafico posizioni
@@ -67,6 +67,7 @@ def grafico_reparti(dataset):
 def grafico_reparti_PCA(dataset):
 
     reparti = ["Portiere", "Difensore", "Centrocampista", "Attaccante"]
+    plt.figure(figsize=(6, 5))
     for reparto in reparti:
         dati_reparto = dataset[dataset['Reparto'] == reparto]
         plt.scatter(dati_reparto['PC1'], dati_reparto['PC2'], c=mappa_colori.get(reparto), s=10, alpha=0.7, label = reparto)
@@ -82,24 +83,45 @@ def grafico_reparti_PCA(dataset):
     plt.show()
 
 ######################################################################################################################
-# Main
+# Creazione grafico migliori calciatori
+def grafico_migliori_calciatori(dataset):
 
-# Preprocessing
-dataset_pca = pca() # Dataset con le componenti principali
-dataset = pd.read_csv("dataset\dataset.csv") # Dataset completo
-# Aggiunta colonna Reparto PC1 e PC2
-dataset['Reparto'] = dataset['Best Position'].map(mappa_posizioni)
-dataset["PC1"] = dataset_pca["PC1"]
-dataset["PC2"] = dataset_pca["PC2"]
-# Rimozione colonne inutili
-colonne = ["Known As", "Best Position", "Reparto", "PC1", "PC2"]
-dataset_nuovo = dataset[colonne]
+    plt.figure(figsize=(6, 6))
+    for index, player in dataset.iterrows():
+        plt.axhline(y=player['Known As'], color='red', linestyle='--', linewidth=1, alpha=0.8)
+        plt.scatter(player['Reparto'], player['Known As'], color=mappa_colori[player["Reparto"]], s=40)
+    plt.title(f'Reparti dei migliori {NUM_CALCIATORI_MIGLIORI} calciatori')
+    plt.xlabel('Reparto')
+    plt.ylabel('Nome Giocatore')
+    #plt.savefig("Clustering/grafici/reparto_migliori.png")
+    plt.show()
 
-# Stampa grafico posizioni
-grafico_posizioni(dataset_nuovo)
+######################################################################################################################
+# Metodo principale per la creazione di tutti i grafici dell'analisi dei reparti
+def analisi_reparti():
 
-# Stampa grafico reparti
-grafico_reparti(dataset_nuovo)
+    # Preprocessing
+    dataset_pca = pca() # Dataset con le componenti principali
+    dataset = pd.read_csv("dataset\dataset.csv") # Dataset completo
+    # Aggiunta colonna Reparto PC1 e PC2
+    dataset['Reparto'] = dataset['Best Position'].map(mappa_posizioni)
+    dataset["PC1"] = dataset_pca["PC1"]
+    dataset["PC2"] = dataset_pca["PC2"]
+    # Rimozione colonne inutili
+    colonne = ["Known As", "Best Position", "Reparto", "PC1", "PC2"]
+    dataset_nuovo = dataset[colonne]
 
-# Stampa grafico reparti PCA
-grafico_reparti_PCA(dataset_nuovo)    
+    # Stampa grafico posizioni
+    grafico_posizioni(dataset_nuovo)
+
+    # Stampa grafico reparti
+    grafico_reparti(dataset_nuovo)
+
+    # Stampa grafico reparti PCA
+    grafico_reparti_PCA(dataset_nuovo)  
+
+    # Creazione grafico migliori calciatori
+    migliori = dataset.head(NUM_CALCIATORI_MIGLIORI).iloc[::-1]
+
+    # Creazione grafico dei migliori calciatori
+    grafico_migliori_calciatori(migliori)

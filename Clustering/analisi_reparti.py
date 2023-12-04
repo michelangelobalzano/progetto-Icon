@@ -83,6 +83,28 @@ def grafico_reparti_PCA(dataset):
     plt.show()
 
 ######################################################################################################################
+# Stampa grafico reparti PCA 3d
+def grafico_reparti_PCA_3d(dataset):
+
+    reparti = ["Portiere", "Difensore", "Centrocampista", "Attaccante"]
+    fig = plt.figure(figsize=(8, 7))
+    ax = fig.add_subplot(111, projection='3d')
+    for reparto in reparti:
+        dati_reparto = dataset[dataset['Reparto'] == reparto]
+        ax.scatter(dati_reparto['PC1'], dati_reparto['PC2'], dati_reparto['PC3'], c=mappa_colori.get(reparto), s=10, alpha=0.7, label = reparto)
+        migliori = dati_reparto.head(CALCIATORI_PER_CLUSTER)
+        for i, (x, y, z, txt) in enumerate(zip(migliori['PC1'], migliori['PC2'], migliori["PC3"], migliori['Known As'])):
+            ax.text(x, y, z, txt, fontsize=8, color='black')
+
+    ax.legend(title='Reparti', loc='upper right')
+    ax.set_title('Giocatori per reparto')
+    ax.set_xlabel('Prima componente principale')
+    ax.set_ylabel('Seconda componente principale')
+    ax.set_zlabel('Terza componente principale')
+    #plt.savefig("Clustering/grafici/reparti_PCA_3d.png")
+    plt.show()
+
+######################################################################################################################
 # Creazione grafico migliori calciatori
 def grafico_migliori_calciatori(dataset):
 
@@ -107,8 +129,9 @@ def analisi_reparti():
     dataset['Reparto'] = dataset['Best Position'].map(mappa_posizioni)
     dataset["PC1"] = dataset_pca["PC1"]
     dataset["PC2"] = dataset_pca["PC2"]
+    dataset["PC3"] = dataset_pca["PC3"]
     # Rimozione colonne inutili
-    colonne = ["Known As", "Best Position", "Reparto", "PC1", "PC2"]
+    colonne = ["Known As", "Best Position", "Reparto", "PC1", "PC2", "PC3"]
     dataset_nuovo = dataset[colonne]
 
     # Stampa grafico posizioni
@@ -118,7 +141,8 @@ def analisi_reparti():
     grafico_reparti(dataset_nuovo)
 
     # Stampa grafico reparti PCA
-    grafico_reparti_PCA(dataset_nuovo)  
+    grafico_reparti_PCA(dataset_nuovo) 
+    grafico_reparti_PCA_3d(dataset_nuovo)  
 
     # Creazione grafico migliori calciatori
     migliori = dataset.head(NUM_CALCIATORI_MIGLIORI).iloc[::-1]

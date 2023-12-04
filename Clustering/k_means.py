@@ -32,6 +32,28 @@ def grafico_cluster(dataset, centroidi):
     plt.show()
 
 ######################################################################################################################
+# Creazione grafico dei cluster 3d
+def grafico_cluster_3d(dataset, centroidi):
+    fig = plt.figure(figsize=(8, 7))
+    ax = fig.add_subplot(111, projection='3d')
+    for num_cluster in range(NUM_CLUSTERS):
+        dati_cluster = dataset[dataset['Cluster'] == num_cluster]
+        ax.scatter(dati_cluster['PC1'], dati_cluster['PC2'], dati_cluster['PC3'], c=mappa_colori.get(num_cluster), s=10, alpha=0.7, label=f'Cluster {num_cluster + 1}')
+        migliori = dati_cluster.head(CALCIATORI_PER_CLUSTER)
+        for i, (x, y, z, txt) in enumerate(zip(migliori['PC1'], migliori['PC2'], migliori['PC3'], migliori['Known As'])):
+            ax.text(x, y, z, txt, fontsize=8, color='black')
+    # Aggiunta centroidi
+    ax.scatter(centroidi[:, 0], centroidi[:, 1], centroidi[:, 2], c='black', marker='.', s=20, label='Centroidi')
+    # Aggiunta legenda e titoli
+    ax.legend(title='Clusters', loc='upper right')
+    ax.set_title('K-Means Clustering')
+    ax.set_xlabel('Prima componente principale')
+    ax.set_ylabel('Seconda componente principale')
+    ax.set_zlabel('Terza componente principale')
+    #plt.savefig("Clustering/grafici/k_means_3d.png")
+    plt.show()
+
+######################################################################################################################
 # Creazione grafico migliori calciatori
 def grafico_migliori_calciatori(dataset):
     plt.figure(figsize=(6, 6))
@@ -60,6 +82,7 @@ def k_means(dataset):
 
     # Creazione grafico dei clusters
     grafico_cluster(dataset, centroidi)
+    grafico_cluster_3d(dataset, centroidi)
 
     # Creazione grafico migliori calciatori
     migliori = dataset.head(NUM_CALCIATORI_MIGLIORI).iloc[::-1]

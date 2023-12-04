@@ -1,9 +1,16 @@
-from k_means import clustering
+from k_means import k_means_clustering
 from analisi_reparti import analisi_reparti
 from analisi_similarita import analisi_similarita
+from hierarchical_clustering import hc_clustering
 
+# Analisi dei reparti
 #analisi_reparti()
 
-#clustering()
+# K-means clustering
+#k_means_clustering()
 
+# Hierarchical clustering
+hc_clustering()
+
+# Analisi similarita
 #analisi_similarita("L. Messi")

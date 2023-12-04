@@ -7,6 +7,7 @@ from preprocessing import preprocessing
 ######################################################################################################################
 # Grafico varianza spiegata
 def grafico_vs(vs, attributi):
+
     plt.figure(figsize=(8, 6))
     plt.bar(range(1, len(vs) + 1), vs, align='center')
     plt.title('Varianza spiegata per componente')
@@ -19,6 +20,7 @@ def grafico_vs(vs, attributi):
 ######################################################################################################################
 # Grafico varianza spiegata cumulativa
 def grafico_vsc(vsc, attributi):
+    
     plt.figure(figsize=(8, 6))
     plt.plot(range(1, len(vsc) + 1), vsc, marker='o', linestyle='-', color='b')
     plt.title('Varianza cumulativa spiegata')

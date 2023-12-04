@@ -7,6 +7,7 @@ NUMERO_CALCIATORI_SIMILI = 10
 ######################################################################################################################
 # Stampa grafico dei 10 calciatori più simili
 def grafico_similarita(calciatori_simili, calciatore, nome):
+
     # Creazione di uno scatter plot nello spazio delle componenti principali
     plt.figure(figsize=(6, 5))
 
@@ -30,6 +31,7 @@ def grafico_similarita(calciatori_simili, calciatore, nome):
 ######################################################################################################################
 # Stampa grafico dei 10 calciatori più simili in 3d
 def grafico_similarita_3d(calciatori_simili, calciatore, nome):
+    
     # Creazione di uno scatter plot nello spazio delle componenti principali
     fig = plt.figure(figsize=(8, 7))
     ax = fig.add_subplot(111, projection='3d')

@@ -1,24 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from pca import pca
+from preprocessing import mappa_posizioni
 
-# Mappatura di ogni posizione in un reparto
-mappa_posizioni = {'GK': 'Portiere',
-                   'CB': 'Difensore',
-                   'LB': 'Difensore',
-                   'RB': 'Difensore',
-                   'LWB': 'Difensore',
-                   'RWB': 'Difensore',
-                   'CDM': 'Centrocampista',
-                   'CM': 'Centrocampista',
-                   'LM': 'Centrocampista',
-                   'RM': 'Centrocampista',
-                   'CAM': 'Attaccante',
-                   'LW': 'Attaccante',
-                   'RW': 'Attaccante',
-                   'CF': 'Attaccante',
-                   'ST': 'Attaccante'
-}
 # Mappatura di un colore per ogni reparto
 mappa_colori = {'Portiere': 'skyblue', 
                 'Difensore': 'lightcoral', 
@@ -123,10 +107,10 @@ def grafico_migliori_calciatori(dataset):
 def analisi_reparti():
 
     # Preprocessing
-    dataset_pca = pca() # Dataset con le componenti principali
-    dataset = pd.read_csv("dataset\dataset.csv") # Dataset completo
-    # Aggiunta colonna Reparto PC1 e PC2
-    dataset['Reparto'] = dataset['Best Position'].map(mappa_posizioni)
+    #pca()
+    dataset = pd.read_csv("dataset\dataset_clustering.csv")
+    dataset_pca = pd.read_csv("dataset\dataset_pca.csv")
+    # Aggiunta colonna PC1 PC2 e PC3
     dataset["PC1"] = dataset_pca["PC1"]
     dataset["PC2"] = dataset_pca["PC2"]
     dataset["PC3"] = dataset_pca["PC3"]

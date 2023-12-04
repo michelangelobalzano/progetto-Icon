@@ -35,7 +35,9 @@ def grafico_vsc(vsc, attributi):
 # PCA
 def pca():
 
-    dataset, attributi = preprocessing()
+    preprocessing()
+
+    dataset = pd.read_csv("dataset\dataset_clustering.csv")
 
     componenti = dataset.select_dtypes(include=['float64', 'int64'])
 
@@ -66,8 +68,8 @@ def pca():
     # Creazione nuovo dataset con le componenti principali
     dataset_pca = pd.DataFrame(data=componenti_principali, columns=[f'PC{i}' for i in range(1, num_componenti + 1)])
     dataset_pca["Known As"] = dataset["Known As"]
+    dataset_pca["Best Position"] = dataset["Best Position"]
+    dataset_pca["Reparto"] = dataset["Reparto"]
 
     # Esportazione del dataset
     dataset_pca.to_csv("dataset\dataset_pca.csv", index = False)
-    
-    return dataset_pca

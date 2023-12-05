@@ -1,33 +1,43 @@
-from sklearn.decomposition import PCA
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from preprocessing import preprocessing
+
+from sklearn.decomposition import PCA
+
+from preprocessing import preprocessing, ATTRIBUTI
 
 ######################################################################################################################
 # Grafico varianza spiegata
-def grafico_vs(vs, attributi):
+def grafico_vs(vs):
 
     plt.figure(figsize=(8, 6))
     plt.bar(range(1, len(vs) + 1), vs, align='center')
+
+    # Aggiunta legenda e titoli
     plt.title('Varianza spiegata per componente')
     plt.xlabel('Componenti')
     plt.ylabel('Varianza spiegata')
-    plt.xticks(range(1, len(vs) + 1), attributi, rotation=90)
+    plt.xticks(range(1, len(vs) + 1), ATTRIBUTI, rotation=90)
+
     #plt.savefig("Clustering/grafici/varianza_spiegata.png")
     plt.show()
 
 ######################################################################################################################
 # Grafico varianza spiegata cumulativa
-def grafico_vsc(vsc, attributi):
+def grafico_vsc(vsc):
     
     plt.figure(figsize=(8, 6))
     plt.plot(range(1, len(vsc) + 1), vsc, marker='o', linestyle='-', color='b')
+
+    # Aggiunta legenda e titoli
     plt.title('Varianza cumulativa spiegata')
     plt.xlabel('Numero di componenti principali')
     plt.ylabel('Varianza cumulativa spiegata')
-    plt.xticks(range(1, len(vsc) + 1), attributi, rotation=90)
+    plt.xticks(range(1, len(vsc) + 1), ATTRIBUTI, rotation=90)
+
+    # Aggiunta linea rossa sul 95%
     plt.axhline(y=0.95, color='r', linestyle='--', label='90% Varianza Spiegata')
+
     #plt.savefig("Clustering/grafici/varianza_spiegata_cumulativa.png")
     plt.show()
 
@@ -53,10 +63,10 @@ def pca():
     varianza_spiegata_cumulativa = np.cumsum(varianza_spiegata)
 
     # Stampa grafico varianza spiegata
-    #grafico_vs(varianza_spiegata, attributi)
+    grafico_vs(varianza_spiegata)
 
     # Stampa grafico varianza spiegata cumulativa
-    #grafico_vsc(varianza_spiegata_cumulativa, attributi)
+    grafico_vsc(varianza_spiegata_cumulativa)
 
     # Calcolo del numero di componenti nel 95% di spiegazione della varianza
     num_componenti = (varianza_spiegata_cumulativa < 0.95).sum() + 1

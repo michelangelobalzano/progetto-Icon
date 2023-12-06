@@ -7,6 +7,11 @@ from sklearn.decomposition import PCA
 from preprocessing import preprocessing, ATTRIBUTI
 
 ######################################################################################################################
+# COSTANTI
+
+VARIANZA_CUMULATIVA = 0.90 # Soglia da considerare nella selezione del numero di componenti principali
+
+######################################################################################################################
 # Grafico varianza spiegata
 def grafico_vs(vs):
 
@@ -35,8 +40,8 @@ def grafico_vsc(vsc):
     plt.ylabel('Varianza cumulativa spiegata')
     plt.xticks(range(1, len(vsc) + 1), ATTRIBUTI, rotation=90)
 
-    # Aggiunta linea rossa sul 95%
-    plt.axhline(y=0.95, color='r', linestyle='--', label='90% Varianza Spiegata')
+    # Aggiunta linea rossa sulla varianza cumulativa fissata
+    plt.axhline(y=VARIANZA_CUMULATIVA, color='r', linestyle='--', label=f'{VARIANZA_CUMULATIVA}% Varianza Spiegata')
 
     #plt.savefig("Clustering/grafici/varianza_spiegata_cumulativa.png")
     plt.show()
@@ -45,9 +50,7 @@ def grafico_vsc(vsc):
 # PCA
 def pca():
 
-    preprocessing()
-
-    dataset = pd.read_csv("dataset\dataset_clustering.csv")
+    dataset = preprocessing()
 
     componenti = dataset.select_dtypes(include=['float64', 'int64'])
 
@@ -68,8 +71,8 @@ def pca():
     # Stampa grafico varianza spiegata cumulativa
     grafico_vsc(varianza_spiegata_cumulativa)
 
-    # Calcolo del numero di componenti nel 95% di spiegazione della varianza
-    num_componenti = (varianza_spiegata_cumulativa < 0.95).sum() + 1
+    # Calcolo del numero di componenti con la varianza cumulativa prefissata
+    num_componenti = (varianza_spiegata_cumulativa < VARIANZA_CUMULATIVA).sum() + 1
     
     # PCA con il numero di componenti
     pca = PCA(n_components=num_componenti)

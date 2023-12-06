@@ -51,5 +51,4 @@ def preprocessing():
     # Aggiunta della colonna Reparto
     dataset_troncato['Reparto'] = dataset['Best Position'].map(MAPPA_POSIZIONI)
 
-    # esportare il dataset su file
-    dataset_troncato.to_csv("dataset\dataset_clustering.csv", index = False)
+    return dataset_troncato

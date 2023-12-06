@@ -114,17 +114,22 @@ def grafico_migliori_calciatori(dataset):
 
     plt.figure(figsize=(6, 6))
 
-    for index, player in dataset.iterrows():
+    for rep in REPARTI:
 
-        plt.axhline(y=player['Known As'], color='red', linestyle='--', linewidth=1, alpha=0.8)
-        plt.scatter(player['Reparto'], player['Known As'], color=MAPPA_COLORI[player["Reparto"]], s=40)
+        dati_cluster = dataset[dataset['Reparto'] == rep]
+        plt.scatter(dati_cluster['Reparto'], dati_cluster['Known As'], color=MAPPA_COLORI.get(rep), s=40)
 
+        # Aggiunta delle linee orizzontali tratteggiate per ogni calciatore
+        for index, row in dati_cluster.iterrows():
+
+            plt.axhline(y=row['Known As'], linestyle='--', color='gray', alpha=0.5)
+    
     # Aggiunta legenda e titoli
-    plt.title(f'Reparti dei migliori {NUM_CALCIATORI_MIGLIORI} calciatori')
+    plt.title(f'Reparto migliori {NUM_CALCIATORI_MIGLIORI} calciatori')
     plt.xlabel('Reparto')
     plt.ylabel('Nome Giocatore')
 
-    #plt.savefig("Clustering/grafici/reparto_migliori.png")
+    #plt.savefig("Clustering/grafici/hierarchical_migliori.png")
     plt.show()
 
 ######################################################################################################################

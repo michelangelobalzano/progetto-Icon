@@ -1,21 +1,20 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from prettytable import PrettyTable
 
 from sklearn.cluster import AgglomerativeClustering
 from scipy.cluster.hierarchy import linkage, dendrogram
-from sklearn.metrics import adjusted_rand_score
-from sklearn.metrics import jaccard_score
+from sklearn.metrics import adjusted_rand_score, rand_score
 from sklearn.metrics.cluster import fowlkes_mallows_score
 
 from pca import pca
-from analisi_reparti import MAPPA_COLORI, REPARTI
+from analisi_reparti import MAPPA_COLORI, REPARTI, NUM_CALCIATORI_MIGLIORI
 
 ######################################################################################################################
 # COSTANTI
 
 NUM_CLUSTERS = 4 # Numero di clusters
 CALCIATORI_PER_CLUSTER = 4 # Calciatori da mostrare per grafico_cluster
-NUM_CALCIATORI_MIGLIORI = 30 # Migliori calciatori per grafico_migliori
 
 ######################################################################################################################
 # Creazione grafico dei cluster
@@ -101,13 +100,18 @@ def grafico_migliori_calciatori(dataset):
 
     plt.figure(figsize=(6, 6))
 
-    for index, player in dataset.iterrows():
+    for rep in REPARTI:
 
-        plt.axhline(y=player['Known As'], color='red', linestyle='--', linewidth=1, alpha=0.8)
-        plt.scatter(player['Cluster'], player['Known As'], color=MAPPA_COLORI[player["Cluster"]], s=40)
+        dati_cluster = dataset[dataset['Cluster'] == rep]
+        plt.scatter(dati_cluster['Cluster'], dati_cluster['Known As'], color=MAPPA_COLORI.get(rep), s=40)
+
+        # Aggiunta delle linee orizzontali tratteggiate per ogni calciatore
+        for index, row in dati_cluster.iterrows():
+
+            plt.axhline(y=row['Known As'], linestyle='--', color='gray', alpha=0.5)
     
     # Aggiunta legenda e titoli
-    plt.title(f'Clustering dei migliori {NUM_CALCIATORI_MIGLIORI} calciatori')
+    plt.title(f'Hierarchical clustering migliori {NUM_CALCIATORI_MIGLIORI} calciatori')
     plt.xlabel('Cluster')
     plt.ylabel('Nome Giocatore')
 
@@ -131,21 +135,41 @@ def associazione_reparto_cluster(dataset):
     return dataset
 
 ######################################################################################################################
+# Metodo di valutazione del clustering
+def valutazione(etichette, assegnazioni):
+
+    ri = rand_score(etichette, assegnazioni)
+    ari = adjusted_rand_score(etichette, assegnazioni)
+    fmi = fowlkes_mallows_score(etichette, assegnazioni)
+
+    tabella = PrettyTable(["Indice", "Punteggio"])
+
+    tabella.add_row(["Rand Index (RI)", round(ri, 2)])
+    tabella.add_row(["Adjusted Rand Index (ARI)", round(ari, 2)])
+    tabella.add_row(["Fowlkes Mallows Index (FMI)", round(fmi, 2)])
+
+    print(tabella)
+
+######################################################################################################################
 # Hierarchical clustering
-def hierarchical_clustering(dataset):
+def hierarchical_clustering():
+
+    # Lettura del dataset della PCA
+    dataset = pd.read_csv("dataset\dataset_pca.csv")
 
     # Creazione del modello di clustering
-    model = AgglomerativeClustering(n_clusters=NUM_CLUSTERS, metric='cosine', linkage='average')
+    model = AgglomerativeClustering(n_clusters=NUM_CLUSTERS, metric='euclidean', linkage='ward')
     labels = model.fit_predict(dataset.iloc[:, :-3])
     
-    linkage_matrix = linkage(model.children_, metric='cosine', method='average')
+    # Calcolo della matrice di collegamento per la realizzazione del dendogramma
+    linkage_matrix = linkage(model.children_, metric='euclidean', method='ward')
     
     # Aggiunta della colonna Cluster al dataset
     dataset['Cluster'] = labels
 
     # Associazione dei reparti ai numeri di cluster
     dataset = associazione_reparto_cluster(dataset)
-    
+
     # Creazione grafici dei clusters
     grafico_cluster(dataset)
     grafico_cluster_3d(dataset)
@@ -157,25 +181,5 @@ def hierarchical_clustering(dataset):
     migliori = dataset.head(NUM_CALCIATORI_MIGLIORI).iloc[::-1]
     grafico_migliori_calciatori(migliori)
 
-    return dataset["Cluster"]
-
-######################################################################################################################
-# Metodo di valutazione del clustering
-def valutazione(etichette, assegnazioni):
-
-    rand_index = adjusted_rand_score(etichette, assegnazioni)
-    print (rand_index)
-    jaccard_index = jaccard_score(etichette, assegnazioni, average='weighted')
-    print (jaccard_index)
-    fms = fowlkes_mallows_score(etichette, assegnazioni)
-    print(fms)
-
-######################################################################################################################
-# Metodo principale per la creazione dei grafici di clustering
-def hc_clustering():
-
-    dataset_pca = pd.read_csv("dataset\dataset_pca.csv")
-
-    assegnazioni = hierarchical_clustering(dataset_pca)
-
-    valutazione(dataset_pca["Reparto"], assegnazioni)
+    # Valutazione dei risultati della classificazione
+    valutazione(dataset["Reparto"], dataset["Cluster"])

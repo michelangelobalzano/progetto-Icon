@@ -4,7 +4,7 @@ from analisi_similarita import analisi_similarita
 from hierarchical_clustering import hierarchical_clustering
 from pca import pca
 
-# PCA
+'''# PCA
 pca()
 
 # Analisi dei reparti
@@ -17,4 +17,6 @@ k_means_clustering()
 hierarchical_clustering()
 
 # Analisi similarita
-analisi_similarita("L. Messi")
+analisi_similarita("L. Messi")'''
+
+analisi_similarita("Cristiano Ronaldo")

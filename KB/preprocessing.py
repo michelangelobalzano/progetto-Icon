@@ -1,6 +1,4 @@
-from pyswip import Prolog
 from unidecode import unidecode
-import re
 import pandas as pd 
 
 # normalizzazione delle parole
@@ -24,27 +22,47 @@ def normalizzazione(parola):
 df = pd.read_csv("dataset/dataset.csv", nrows=500)
 
 # selezione delle colonne utili
-dataset = df[["Known As", "Overall", "Nationality", "Club Name","Club Jersey Number","Best Position"]]
+dataset = df[["Known As", "Overall", "Potential", "Nationality", "Club Name","Club Jersey Number","Best Position", "Preferred Foot", "Contract Until", "Joined On"]]
 
 # creazione delle clausole dei calciatori
-with open("prolog_files/kb_calciatori_query.pl", "w") as file_prolog:
+with open("prolog_files/kb_fatti.pl", "w") as file_prolog:
     for index, row in dataset.iterrows():
         # recupero dei dati dalla singola tupla
         nome = row["Known As"]
         overall = row["Overall"]
+        potenziale = row["Potential"]
         nazionalita = row["Nationality"]
         squadra = row["Club Name"]
-        numero_maglia = row["Club Jersey Number"]
-        ruolo = row["Best Position"]  # Utilizza espressione regolare per separare i ruoli
+        numero = row["Club Jersey Number"]
+        ruolo = row["Best Position"]
+        piede = row["Preferred Foot"]
+        scadenza = row["Contract Until"]
+        inizio = row["Joined On"]
         
         # normalizzazione delle stringhe
         nome = normalizzazione(nome)
         squadra = normalizzazione(squadra)
         nazionalita = normalizzazione(nazionalita)
         ruolo = normalizzazione(ruolo)
+        piede = normalizzazione(piede)
         
-        # creazione della clausola
-        clausola = f"calciatore('{nome}', {overall}, '{nazionalita}', '{squadra}', {numero_maglia}, '{ruolo}')."
-        
-        # scrittura della clausola
+        # creazione e scrittura delle clausole
+        file_prolog.write(f"% Clausole relative a {nome}\n")
+        clausola = f"overall('{nome}', {overall})."
         file_prolog.write(clausola + "\n")
+        clausola = f"potenziale('{nome}', {potenziale})."
+        file_prolog.write(clausola + "\n")
+        clausola = f"nazionalita('{nome}', {nazionalita})."
+        file_prolog.write(clausola + "\n")
+        clausola = f"squadra('{nome}', {squadra})."
+        file_prolog.write(clausola + "\n")
+        clausola = f"numero('{nome}', {numero})."
+        file_prolog.write(clausola + "\n")
+        clausola = f"ruolo('{nome}', {ruolo})."
+        file_prolog.write(clausola + "\n")
+        clausola = f"piede('{nome}', {piede})."
+        file_prolog.write(clausola + "\n")
+        clausola = f"scadenza('{nome}', {scadenza})."
+        file_prolog.write(clausola + "\n")
+        clausola = f"inizio('{nome}', {inizio})."
+        file_prolog.write(clausola + "\n\n")
